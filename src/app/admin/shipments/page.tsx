@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server'
 import { SearchFilterBar } from '../components/SearchFilterBar'
 import { CuratedCard } from '../components/CuratedCard'
 import { EmptyState } from '../components/EmptyState'
+import { StatsOverview } from '../components/StatsOverview'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default async function ShipmentsPage({
@@ -59,59 +60,69 @@ export default async function ShipmentsPage({
   }
 
   return (
-    <main className="min-h-screen bg-bone pt-24 pb-32 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-16">
-          <span className="font-sans text-[11px] uppercase tracking-[0.2em] text-moss">
-            Logistics & Operations
+    <main className="min-h-screen p-12 pb-32">
+      <header className="flex justify-between items-center mb-12">
+        <div>
+          <span className="font-sans text-[11px] uppercase tracking-widest text-secondary">
+            Logistics & Logistics Management
           </span>
-          <h1 className="font-display text-5xl md:text-6xl mt-3 text-evergreen">
+          <h1 className="font-display text-5xl md:text-6xl mt-2 !text-[#03271a]">
             Shipping Overview
           </h1>
-        </header>
-
-        <SearchFilterBar />
-
-        {shipments.length === 0 ? (
-          <EmptyState />
-        ) : (
-          <div className="space-y-4 md:space-y-6">
-            {shipments.map((shipment) => (
-              <CuratedCard key={shipment.id} shipment={shipment} />
-            ))}
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 bg-surface-high dark:bg-slate-900 border border-outline-ghost px-4 py-2 rounded-full shadow-sm">
+            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+            <span className="text-xs font-semibold tracking-wide uppercase text-primary dark:text-white">
+              Bonzai Status: Active
+            </span>
           </div>
-        )}
+        </div>
+      </header>
 
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-12 pt-8">
-            <p className="font-sans text-xs text-moss">
-              Page {page} of {totalPages}
-            </p>
-            <div className="flex items-center gap-2">
-              <a
-                href={hasPrev ? buildPageUrl(page - 1) : '#'}
-                className={`p-3 rounded-xl transition-all duration-300 ${
-                  hasPrev
-                    ? 'bg-surface-low text-evergreen hover:bg-surface-container'
-                    : 'bg-surface-low/50 text-moss/30 cursor-not-allowed'
-                }`}
-              >
-                <ChevronLeft size={18} strokeWidth={1.5} />
-              </a>
-              <a
-                href={hasNext ? buildPageUrl(page + 1) : '#'}
-                className={`p-3 rounded-xl transition-all duration-300 ${
-                  hasNext
-                    ? 'bg-surface-low text-evergreen hover:bg-surface-container'
-                    : 'bg-surface-low/50 text-moss/30 cursor-not-allowed'
-                }`}
-              >
-                <ChevronRight size={18} strokeWidth={1.5} />
-              </a>
-            </div>
+      <StatsOverview />
+
+      <SearchFilterBar />
+
+      {shipments.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <div className="space-y-4 md:space-y-6">
+          {shipments.map((shipment) => (
+            <CuratedCard key={shipment.id} shipment={shipment} />
+          ))}
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-12 pt-8">
+          <p className="font-sans text-xs text-secondary">
+            Page {page} of {totalPages}
+          </p>
+          <div className="flex items-center gap-2">
+            <a
+              href={hasPrev ? buildPageUrl(page - 1) : '#'}
+              className={`p-3 rounded-xl transition-all duration-300 ${
+                hasPrev
+                  ? 'bg-surface-low text-primary hover:bg-surface-container'
+                  : 'bg-surface-low/50 text-secondary/30 cursor-not-allowed'
+              }`}
+            >
+              <ChevronLeft size={18} strokeWidth={1.5} />
+            </a>
+            <a
+              href={hasNext ? buildPageUrl(page + 1) : '#'}
+              className={`p-3 rounded-xl transition-all duration-300 ${
+                hasNext
+                  ? 'bg-surface-low text-primary hover:bg-surface-container'
+                  : 'bg-surface-low/50 text-secondary/30 cursor-not-allowed'
+              }`}
+            >
+              <ChevronRight size={18} strokeWidth={1.5} />
+            </a>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </main>
   )
 }
