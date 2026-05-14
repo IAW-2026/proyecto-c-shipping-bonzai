@@ -25,6 +25,14 @@ enum ShipmentStatus {
   CANCELLED
 }
 
+enum ShipmentType {
+  PLANTA_VIVA
+  INSUMOS
+  FRAGIL
+  SEMILLAS
+  OTROS
+}
+
 model LogisticOperator {
   id            String         @id @default(uuid()) @db.Uuid
   clerk_user_id String         @unique
@@ -51,6 +59,7 @@ model Shipment {
   seller_id         String
   status           ShipmentStatus @default(PENDING)
   delivery_address String         @db.Text
+  type             ShipmentType
   delivered_at     DateTime?
   created_at       DateTime       @default(now())
   updated_at       DateTime       @updatedAt
