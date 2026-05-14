@@ -7,7 +7,7 @@ import { EmptyState } from '../components/EmptyState'
 import { StatsOverview } from '../components/StatsOverview'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-export default async function ShipmentsPage({
+export default async function DashboardPage({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; search?: string; status?: string }>
@@ -56,7 +56,7 @@ export default async function ShipmentsPage({
     if (search) sp.set('search', search)
     if (statusFilter !== 'ALL') sp.set('status', statusFilter)
     sp.set('page', String(p))
-    return `/admin/shipments?${sp.toString()}`
+    return `/operator/dashboard?${sp.toString()}`
   }
 
   return (
@@ -71,9 +71,9 @@ export default async function ShipmentsPage({
           </h1>
         </div>
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3 bg-surface-high dark:bg-slate-900 border border-outline-ghost px-4 py-2 rounded-full shadow-sm">
+          <div className="flex items-center gap-3 bg-surface-high border border-outline-ghost px-4 py-2 rounded-full shadow-sm">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-xs font-semibold tracking-wide uppercase text-primary dark:text-white">
+            <span className="text-xs font-semibold tracking-wide uppercase text-primary">
               Bonzai Status: Active
             </span>
           </div>

@@ -2,7 +2,7 @@ import { Sidebar } from './components/Sidebar'
 import { Footer } from './components/Footer'
 import { ThemeToggle } from './components/ThemeToggle'
 
-export default function AdminLayout({
+export default function OperatorLayout({
   children,
 }: {
   children: React.ReactNode

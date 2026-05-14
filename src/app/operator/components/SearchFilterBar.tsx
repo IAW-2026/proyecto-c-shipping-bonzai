@@ -24,7 +24,7 @@ export function SearchFilterBar() {
       if (newSearch) params.set('search', newSearch)
       if (newStatus && newStatus !== 'ALL') params.set('status', newStatus)
       params.set('page', '1')
-      router.push(`/admin/shipments?${params.toString()}`)
+      router.push(`/operator/dashboard?${params.toString()}`)
     },
     [router]
   )

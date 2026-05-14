@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Package, BarChart3, Settings, User } from 'lucide-react'
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/shipments', label: 'Shipping', icon: Package },
-  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/operator/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/operator/dashboard', label: 'Shipping', icon: Package },
+  { href: '/operator/dashboard', label: 'Analytics', icon: BarChart3 },
+  { href: '/operator/dashboard', label: 'Settings', icon: Settings },
 ]
 
 export function Sidebar() {
@@ -27,13 +27,11 @@ export function Sidebar() {
 
       <nav className="flex-1 px-6 space-y-2 mt-4">
         {navItems.map((item) => {
-          const isActive = item.href === '/admin'
-            ? pathname === '/admin'
-            : pathname === item.href || pathname?.startsWith(`${item.href}/`)
+          const isActive = pathname === item.href
           const Icon = item.icon
           return (
             <Link
-              key={item.href}
+              key={item.label}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 transition-all group rounded-lg ${
                 isActive

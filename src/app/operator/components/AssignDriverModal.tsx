@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Driver } from '@prisma/client'
 import { X, User, Check } from 'lucide-react'
-import { assignDriver } from '../shipments/actions'
+import { assignDriver } from '../dashboard/actions'
 
 export function AssignDriverModal({
   shipmentId,

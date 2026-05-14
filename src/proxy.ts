@@ -8,19 +8,17 @@ const isPublicRoute = createRouteMatcher([
   '/api/webhooks(.*)',
 ])
 
-const isAdminRoute = createRouteMatcher(['/admin(.*)'])
+const isOperatorRoute = createRouteMatcher(['/operator(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isAdminRoute(req)) {
+  if (isOperatorRoute(req)) {
     const { userId, sessionClaims } = await auth()
-    console.log('UserId:', userId)
-    console.log('SessionClaims:', JSON.stringify(sessionClaims, null, 2))
     if (!userId) {
       return NextResponse.redirect(new URL('/sign-in', req.url))
     }
     const claims = sessionClaims as { roles?: string[] } | null
     const roles = claims?.roles || []
-    if (!roles.includes('shipping_admin')) {
+    if (!roles.includes('operator_shipping')) {
       return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 })
     }
   }

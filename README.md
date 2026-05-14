@@ -16,7 +16,7 @@ La autenticacion se gestiona mediante **Clerk**. Segun tu rol, accedes a funcion
 
 ### Operador Logistico (Admin)
 
-- Panel `/admin/shipments` para gestion completa de envios
+- Panel `/operator/dashboard` para gestion completa de envios
 - Asignacion de repartidores a envios pendientes
 - Filtrado por estado y busqueda por tracking ID
 
