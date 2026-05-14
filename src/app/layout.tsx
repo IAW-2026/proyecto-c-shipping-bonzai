@@ -1,21 +1,23 @@
 import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Newsreader, Manrope } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const newsreader = Newsreader({
+  variable: '--font-newsreader',
   subsets: ['latin'],
+  display: 'swap',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const manrope = Manrope({
+  variable: '--font-manrope',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
   title: 'Shipping App',
-  description: 'Ecosistema botánico de envíos',
+  description: 'Ecosistema botanico de envios',
 }
 
 export default function RootLayout({
@@ -27,10 +29,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         lang='es'
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${newsreader.variable} ${manrope.variable} antialiased`}
       >
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <header className='flex justify-end items-center p-4 gap-4 h-16 border-b'>
+        <body className={`${newsreader.variable} ${manrope.variable} antialiased bg-bone text-evergreen`}>
+          <header className='flex justify-end items-center p-4 gap-4 h-16 fixed top-0 right-0 z-50'>
             <Show when='signed-out'>
               <SignInButton />
               <SignUpButton />
@@ -39,7 +41,7 @@ export default function RootLayout({
               <UserButton />
             </Show>
           </header>
-          <main>{children}</main>
+          {children}
         </body>
       </html>
     </ClerkProvider>
