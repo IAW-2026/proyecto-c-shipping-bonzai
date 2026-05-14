@@ -47,20 +47,20 @@ export function AssignDriverModal({
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-evergreen/30 backdrop-blur-[20px]"
+        className="absolute inset-0 bg-primary/30 backdrop-blur-[20px]"
         onClick={onClose}
       />
-      <div className="relative bg-bone rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+      <div className="relative bg-background rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="font-display text-2xl text-evergreen">
+            <h3 className="font-display text-2xl text-primary">
               Select Driver
             </h3>
             <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-surface-low transition-all"
             >
-              <X size={18} className="text-evergreen" strokeWidth={1.5} />
+              <X size={18} className="text-primary" strokeWidth={1.5} />
             </button>
           </div>
 
@@ -72,7 +72,7 @@ export function AssignDriverModal({
             </div>
           ) : drivers.length === 0 ? (
             <div className="text-center py-8">
-              <p className="font-sans text-sm text-moss">
+              <p className="font-sans text-sm text-secondary">
                 No drivers available
               </p>
             </div>
@@ -85,18 +85,18 @@ export function AssignDriverModal({
                   disabled={assigning}
                   className="w-full flex items-center gap-4 p-4 bg-surface-low rounded-xl hover:bg-surface-container transition-all disabled:opacity-50"
                 >
-                  <div className="w-10 h-10 rounded-full bg-evergreen/10 flex items-center justify-center flex-shrink-0">
-                    <User size={18} className="text-evergreen" strokeWidth={1.5} />
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <User size={18} className="text-primary" strokeWidth={1.5} />
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-sans text-sm font-medium text-evergreen">
+                    <p className="font-sans text-sm font-medium text-primary">
                       {driver.clerk_user_id}
                     </p>
-                    <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss">
+                    <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
                       {driver.status}
                     </p>
                   </div>
-                  <Check size={16} className="text-moss opacity-0 group-hover:opacity-100" strokeWidth={1.5} />
+                  <Check size={16} className="text-secondary opacity-0 group-hover:opacity-100" strokeWidth={1.5} />
                 </button>
               ))}
             </div>
@@ -106,7 +106,7 @@ export function AssignDriverModal({
 
       {showToast && (
         <div className="fixed top-6 right-6 z-[70]">
-          <div className="backdrop-blur-[20px] bg-evergreen/90 text-white px-6 py-3 rounded-xl shadow-lg">
+          <div className="backdrop-blur-[20px] bg-primary/90 text-white px-6 py-3 rounded-xl shadow-lg">
             <p className="font-sans text-sm font-medium">
               Driver assigned successfully
             </p>

@@ -2,20 +2,20 @@ import { ShipmentStatus } from '@prisma/client'
 
 const statusConfig: Record<ShipmentStatus, { label: string; className: string }> = {
   PENDING: {
-    label: 'Pending',
-    className: 'bg-umber/10 text-umber',
+    label: 'Packing',
+    className: 'bg-status-amber text-status-amber-text',
   },
   IN_TRANSIT: {
     label: 'In Transit',
-    className: 'bg-moss/10 text-moss',
+    className: 'bg-status-blue text-status-blue-text',
   },
   DELIVERED: {
     label: 'Delivered',
-    className: 'bg-evergreen/10 text-evergreen',
+    className: 'bg-status-green text-status-green-text',
   },
   CANCELLED: {
     label: 'Cancelled',
-    className: 'bg-red-900/10 text-red-800',
+    className: 'bg-red-100 text-red-800',
   },
 }
 
@@ -23,7 +23,7 @@ export function StatusBadge({ status }: { status: ShipmentStatus }) {
   const config = statusConfig[status]
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase tracking-[0.15em] font-medium font-sans ${config.className}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium font-sans ${config.className}`}
     >
       {config.label}
     </span>

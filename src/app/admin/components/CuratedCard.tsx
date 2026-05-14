@@ -34,33 +34,33 @@ export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
-              <h3 className="font-display text-xl md:text-2xl text-evergreen">
+              <h3 className="font-display text-xl md:text-2xl text-primary">
                 {shipment.tracking_id}
               </h3>
               <StatusBadge status={shipment.status} />
             </div>
-            <p className="font-sans text-xs uppercase tracking-[0.1em] text-moss mb-1">
+            <p className="font-sans text-xs uppercase tracking-[0.1em] text-secondary mb-1">
               {typeLabels[shipment.type]}
             </p>
-            <p className="font-sans text-sm text-evergreen/70 truncate">
+            <p className="font-sans text-sm text-primary/70 truncate">
               {shipment.delivery_address}
             </p>
           </div>
 
           <div className="flex items-center gap-6 md:gap-8">
             <div className="hidden md:block text-right">
-              <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss">
+              <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
                 Order
               </p>
-              <p className="font-sans text-sm text-evergreen">
+              <p className="font-sans text-sm text-primary">
                 {shipment.order_id}
               </p>
             </div>
             <div className="hidden md:block text-right">
-              <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss">
+              <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
                 Created
               </p>
-              <p className="font-sans text-sm text-evergreen">
+              <p className="font-sans text-sm text-primary">
                 {new Date(shipment.created_at).toLocaleDateString('es-ES', {
                   day: 'numeric',
                   month: 'short',
@@ -73,7 +73,7 @@ export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
                   e.stopPropagation()
                   setAssignModalOpen(true)
                 }}
-                className="flex items-center gap-2 px-4 py-2.5 bg-evergreen text-white rounded-lg text-xs uppercase tracking-[0.1em] font-sans font-medium hover:bg-evergreen/90 transition-all"
+                className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-xs uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
               >
                 <Truck size={14} strokeWidth={1.5} />
                 <span className="hidden sm:inline">Assign</span>
@@ -81,10 +81,10 @@ export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
             )}
             {shipment.driver && (
               <div className="text-right">
-                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss">
+                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
                   Driver
                 </p>
-                <p className="font-sans text-sm text-evergreen">
+                <p className="font-sans text-sm text-primary">
                   {shipment.driver.clerk_user_id.slice(0, 12)}...
                 </p>
               </div>

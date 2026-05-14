@@ -1,4 +1,6 @@
-import { FloatingDock } from './components/FloatingDock'
+import { Sidebar } from './components/Sidebar'
+import { Footer } from './components/Footer'
+import { ThemeToggle } from './components/ThemeToggle'
 
 export default function AdminLayout({
   children,
@@ -6,9 +8,13 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-bone">
-      <FloatingDock />
-      {children}
+    <div className="min-h-screen bg-background flex">
+      <Sidebar />
+      <div className="flex-1 ml-64">
+        {children}
+        <Footer />
+      </div>
+      <ThemeToggle />
     </div>
   )
 }
