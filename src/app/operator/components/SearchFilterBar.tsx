@@ -24,7 +24,7 @@ export function SearchFilterBar() {
       if (newSearch) params.set('search', newSearch)
       if (newStatus && newStatus !== 'ALL') params.set('status', newStatus)
       params.set('page', '1')
-      router.push(`/admin/shipments?${params.toString()}`)
+      router.push(`/operator/dashboard?${params.toString()}`)
     },
     [router]
   )
@@ -43,7 +43,7 @@ export function SearchFilterBar() {
       <div className="relative max-w-md">
         <Search
           size={16}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-moss"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary"
           strokeWidth={1.5}
         />
         <input
@@ -51,19 +51,19 @@ export function SearchFilterBar() {
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
           placeholder="Search tracking ID..."
-          className="w-full pl-11 pr-4 py-3 bg-surface-low rounded-xl text-sm font-sans text-evergreen placeholder:text-moss/50 focus:outline-none focus:ring-1 focus:ring-evergreen/20 transition-all"
+          className="w-full pl-11 pr-4 py-3 bg-surface-low rounded-xl text-sm font-sans text-primary placeholder:text-secondary/50 focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all"
         />
       </div>
       <div className="flex items-center gap-2 flex-wrap">
-        <SlidersHorizontal size={14} className="text-moss mr-1" strokeWidth={1.5} />
+        <SlidersHorizontal size={14} className="text-secondary mr-1" strokeWidth={1.5} />
         {statusOptions.map((option) => (
           <button
             key={option.value}
             onClick={() => handleStatusChange(option.value)}
             className={`px-3 py-1.5 rounded-lg text-[11px] uppercase tracking-[0.1em] font-sans font-medium transition-all duration-300 ${
               currentStatus === option.value
-                ? 'bg-evergreen text-white'
-                : 'bg-surface-low text-moss hover:bg-surface-container'
+                ? 'bg-primary text-white'
+                : 'bg-surface-low text-secondary hover:bg-surface-container'
             }`}
           >
             {option.label}

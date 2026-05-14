@@ -25,13 +25,13 @@ export function Timeline({ events }: { events: TrackingEvent[] }) {
               <div className="absolute left-[11px] top-7 bottom-0 w-px bg-surface-container" />
             )}
             <div className="relative z-10 flex-shrink-0 w-6 h-6 rounded-full bg-surface-low flex items-center justify-center">
-              <span className="text-moss">{icon}</span>
+              <span className="text-secondary">{icon}</span>
             </div>
             <div className={`pb-6 flex-1 ${index % 2 === 0 ? 'bg-surface-low/50' : ''} rounded-lg px-3 py-2`}>
-              <p className="font-display text-base text-evergreen">
+              <p className="font-display text-base text-primary">
                 {event.status}
               </p>
-              <p className="font-sans text-[11px] text-moss mt-1">
+              <p className="font-sans text-[11px] text-secondary mt-1">
                 {new Date(event.timestamp).toLocaleDateString('es-ES', {
                   day: 'numeric',
                   month: 'long',

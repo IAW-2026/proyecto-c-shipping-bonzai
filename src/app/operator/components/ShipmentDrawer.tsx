@@ -31,24 +31,24 @@ export function ShipmentDrawer({
   return (
     <div className="fixed inset-0 z-50">
       <div
-        className="absolute inset-0 bg-evergreen/20 backdrop-blur-sm"
+        className="absolute inset-0 bg-primary/20 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="absolute right-0 top-0 h-full w-full max-w-lg bg-bone shadow-2xl overflow-y-auto">
+      <div className="absolute right-0 top-0 h-full w-full max-w-lg bg-background shadow-2xl overflow-y-auto">
         <div className="p-8">
           <div className="flex items-center justify-between mb-8">
-            <span className="font-sans text-[11px] uppercase tracking-[0.2em] text-moss">
+            <span className="font-sans text-[11px] uppercase tracking-[0.2em] text-secondary">
               Shipment Details
             </span>
             <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-surface-low transition-all"
             >
-              <X size={18} className="text-evergreen" strokeWidth={1.5} />
+              <X size={18} className="text-primary" strokeWidth={1.5} />
             </button>
           </div>
 
-          <h2 className="font-display text-4xl text-evergreen mb-4">
+          <h2 className="font-display text-4xl text-primary mb-4">
             {shipment.tracking_id}
           </h2>
           <div className="mb-8">
@@ -57,45 +57,45 @@ export function ShipmentDrawer({
 
           <div className="space-y-6 mb-10">
             <div className="bg-surface-low rounded-xl p-5">
-              <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss mb-1">
+              <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                 Delivery Address
               </p>
-              <p className="font-sans text-sm text-evergreen">
+              <p className="font-sans text-sm text-primary">
                 {shipment.delivery_address}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-surface-low rounded-xl p-5">
-                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss mb-1">
+                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Order Ref
                 </p>
-                <p className="font-sans text-sm text-evergreen">
+                <p className="font-sans text-sm text-primary">
                   {shipment.order_id}
                 </p>
               </div>
               <div className="bg-surface-low rounded-xl p-5">
-                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss mb-1">
+                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Type
                 </p>
-                <p className="font-sans text-sm text-evergreen">
+                <p className="font-sans text-sm text-primary">
                   {shipment.type}
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-surface-low rounded-xl p-5">
-                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss mb-1">
+                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Buyer
                 </p>
-                <p className="font-sans text-sm text-evergreen">
+                <p className="font-sans text-sm text-primary">
                   {shipment.buyer_id}
                 </p>
               </div>
               <div className="bg-surface-low rounded-xl p-5">
-                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-moss mb-1">
+                <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Seller
                 </p>
-                <p className="font-sans text-sm text-evergreen">
+                <p className="font-sans text-sm text-primary">
                   {shipment.seller_id}
                 </p>
               </div>
@@ -105,7 +105,7 @@ export function ShipmentDrawer({
           {shipment.status === 'PENDING' && (
             <button
               onClick={onAssign}
-              className="w-full flex items-center justify-center gap-2 py-4 bg-evergreen text-white rounded-xl text-xs uppercase tracking-[0.1em] font-sans font-medium hover:bg-evergreen/90 transition-all mb-10"
+              className="w-full flex items-center justify-center gap-2 py-4 bg-primary text-white rounded-xl text-xs uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all mb-10"
             >
               <Truck size={16} strokeWidth={1.5} />
               Assign Driver
@@ -114,7 +114,7 @@ export function ShipmentDrawer({
 
           {shipment.tracking_events.length > 0 && (
             <div>
-              <h3 className="font-sans text-[11px] uppercase tracking-[0.2em] text-moss mb-6">
+              <h3 className="font-sans text-[11px] uppercase tracking-[0.2em] text-secondary mb-6">
                 Curated History
               </h3>
               <Timeline events={shipment.tracking_events} />
