@@ -11,7 +11,7 @@ export async function assignDriver(shipmentId: string, driverId: string) {
       status: 'IN_TRANSIT',
     },
   })
-  revalidatePath('/admin/shipments')
+  revalidatePath('/operator/dashboard')
 }
 
 export async function getAvailableDrivers() {
