@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
-import { auth } from '@clerk/nextjs/server'
+import { getOrCreateProfile } from '@/lib/auth-helpers'
 import { SearchFilterBar } from '../components/SearchFilterBar'
 import { CuratedCard } from '../components/CuratedCard'
 import { EmptyState } from '../components/EmptyState'
@@ -12,8 +12,10 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ page?: string; search?: string; status?: string }>
 }) {
-  const { userId } = await auth()
-  if (!userId) redirect('/')
+  const profile = await getOrCreateProfile()
+  if (!profile || !profile.isActive) {
+    redirect('/')
+  }
 
   const params = await searchParams
   const page = Number(params.page) || 1
