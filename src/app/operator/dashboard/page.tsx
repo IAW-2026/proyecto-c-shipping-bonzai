@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
-import { getOrCreateProfile } from '@/lib/auth-helpers'
+import { getLocalProfile, isAdmin } from '@/lib/auth-helpers'
 import { SearchFilterBar } from '../components/SearchFilterBar'
 import { CuratedCard } from '../components/CuratedCard'
 import { EmptyState } from '../components/EmptyState'
@@ -12,9 +12,10 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ page?: string; search?: string; status?: string }>
 }) {
-  const profile = await getOrCreateProfile()
-  if (!profile || !profile.isActive) {
-    redirect('/')
+  const profile = await getLocalProfile()
+  const admin = await isAdmin()
+  if (!admin && (!profile || !profile.isActive)) {
+    redirect('/unauthorized?reason=pending')
   }
 
   const params = await searchParams

@@ -1,7 +1,45 @@
 import Link from 'next/link'
-import { Leaf } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import { auth } from '@clerk/nextjs/server'
+import { clerkClient } from '@clerk/nextjs/server'
+import { Leaf, ArrowRight } from 'lucide-react'
 
-export default function HomePage() {
+export const dynamic = 'force-dynamic'
+
+const VALID_SHIPPING_ROLES = ['operator_shipping', 'driver_shipping', 'shipping_admin']
+
+function getRolesFromUser(user: { publicMetadata?: Record<string, unknown> }): string[] {
+  const raw = user.publicMetadata?.roles
+  if (Array.isArray(raw)) return raw as string[]
+  if (typeof raw === 'string') return [raw]
+  return []
+}
+
+function getDashboardUrl(roles: string[]): string {
+  if (roles.includes('shipping_admin')) return '/admin/onboarding'
+  if (roles.includes('operator_shipping')) return '/operator/dashboard'
+  if (roles.includes('driver_shipping')) return '/driver'
+  return '/'
+}
+
+export default async function HomePage() {
+  const { userId } = await auth()
+
+  let isAuthenticated = false
+  let hasRole = false
+  let dashboardUrl = '/operator/dashboard'
+
+  if (userId) {
+    const client = await clerkClient()
+    const user = await client.users.getUser(userId)
+    const roles = getRolesFromUser(user)
+    hasRole = roles.some((r) => VALID_SHIPPING_ROLES.includes(r))
+    isAuthenticated = true
+    if (hasRole) {
+      dashboardUrl = getDashboardUrl(roles)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8">
       <div className="text-center max-w-2xl">
@@ -15,15 +53,25 @@ export default function HomePage() {
           Bonzai Shipping Portal
         </p>
         <p className="font-sans text-sm text-secondary/70 mb-12 max-w-md mx-auto">
-          Gestion del ciclo de vida de los envios botanicos. Desde plantas vivas 
+          Gestion del ciclo de vida de los envios botanicos. Desde plantas vivas
           hasta insumos especializados, cada especimen es un registro curado en tránsito.
         </p>
-        <Link
-          href="/sign-in"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl text-sm uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
-        >
-          Entrar al Archivo
-        </Link>
+        {isAuthenticated && hasRole ? (
+          <a
+            href={dashboardUrl}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl text-sm uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
+          >
+            <ArrowRight size={16} strokeWidth={1.5} />
+            Ir al Panel
+          </a>
+        ) : (
+          <Link
+            href="/sign-in"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl text-sm uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
+          >
+            Entrar al Archivo
+          </Link>
+        )}
       </div>
     </div>
   )

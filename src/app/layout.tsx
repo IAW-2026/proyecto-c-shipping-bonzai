@@ -1,6 +1,7 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Newsreader, Manrope } from 'next/font/google'
+import { UserBubble } from '@/components/UserBubble'
 import './globals.css'
 
 const newsreader = Newsreader({
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <body className={`${newsreader.variable} ${manrope.variable} antialiased bg-background text-primary`}>
           {children}
+          <UserBubble />
         </body>
       </html>
     </ClerkProvider>
