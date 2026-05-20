@@ -2,21 +2,16 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Package, BarChart3, Settings, Shield } from 'lucide-react'
-import { useUser } from '@clerk/nextjs'
+import { Users, LayoutDashboard, Truck } from 'lucide-react'
 
 const navItems = [
-  { href: '/operator/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/operator/dashboard', label: 'Shipping', icon: Package },
-  { href: '/operator/dashboard', label: 'Analytics', icon: BarChart3 },
-  { href: '/operator/dashboard', label: 'Settings', icon: Settings },
+  { href: '/admin/onboarding', label: 'Nuevos Especímenes', icon: Users },
+  { href: '/operator/dashboard', label: 'Shipping Overview', icon: LayoutDashboard },
+  { href: '/driver', label: 'Vista del Repartidor', icon: Truck },
 ]
 
-export function Sidebar() {
+export function AdminSidebar() {
   const pathname = usePathname()
-  const { user } = useUser()
-  const roles = (user?.publicMetadata?.roles as string[]) || []
-  const isAdmin = roles.includes('shipping_admin')
 
   return (
     <aside className="w-64 border-r border-outline-ghost flex flex-col fixed h-full bg-surface-high z-20 dark:bg-dark-bg dark:border-slate-800">
@@ -44,28 +39,21 @@ export function Sidebar() {
               }`}
             >
               <Icon size={18} strokeWidth={1.5} />
-              <span className="text-sm font-medium tracking-wide uppercase">
+              <span className="text-sm font-medium tracking-wide">
                 {item.label}
               </span>
             </Link>
           )
         })}
-
-        {isAdmin && (
-          <div className="pt-4 mt-4 border-t border-outline-ghost dark:border-slate-800">
-            <Link
-              href="/admin/onboarding"
-              className="flex items-center gap-3 px-4 py-3 transition-all group rounded-lg text-secondary hover:text-primary"
-            >
-              <Shield size={18} strokeWidth={1.5} />
-              <span className="text-sm font-medium tracking-wide">
-                Panel de Administración
-              </span>
-            </Link>
-          </div>
-        )}
       </nav>
 
+      <div className="p-6 mt-auto">
+        <div className="px-4 py-2">
+          <p className="font-sans text-[10px] text-secondary uppercase tracking-widest">
+            Curador Principal
+          </p>
+        </div>
+      </div>
     </aside>
   )
 }
