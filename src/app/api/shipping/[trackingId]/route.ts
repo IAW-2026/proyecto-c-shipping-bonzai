@@ -47,7 +47,7 @@ export async function GET(
     const roles = getRolesFromClaims(sessionClaims)
     const isAdminOrOperator = roles.some((r) => ADMIN_ROLES.includes(r))
 
-    if (!isAdminOrOperator && shipment.buyer_id !== userId) {
+    if (!isAdminOrOperator && shipment.buyer_id !== userId && shipment.seller_id !== userId) {
       return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 })
     }
 

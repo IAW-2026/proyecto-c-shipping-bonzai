@@ -166,6 +166,38 @@ describe('GET /api/shipping/[trackingId]', () => {
     expect(data.events[0].poeticMessage).toBe('El espécimen ha llegado a destino, completando su ciclo botánico')
   })
 
+  it('should return 200 when seller consults their own shipment', async () => {
+    const sellerId = 'user_seller_456'
+    mockedAuth.mockResolvedValue({ userId: sellerId, sessionClaims: null, redirectToSignIn: vi.fn() } as never)
+
+    mockedPrisma.shipment.findUnique.mockResolvedValue({
+      id: 'shp-001',
+      tracking_id: 'BOT-SELLER123',
+      buyer_id: 'user_buyer_123',
+      seller_id: sellerId,
+      status: 'PENDING',
+      delivery_address: 'Jardin Botanico',
+      type: 'PLANTA_VIVA',
+      created_at: new Date('2024-01-15T10:00:00Z'),
+      updated_at: new Date('2024-01-15T10:00:00Z'),
+      tracking_events: [
+        {
+          id: 'evt-001',
+          status: 'RECIBIDO_EN_ORIGEN',
+          timestamp: new Date('2024-01-15T10:00:00Z'),
+        },
+      ],
+    } as never)
+
+    const request = createRequest('BOT-SELLER123')
+    const response = await GET(request, { params: Promise.resolve({ trackingId: 'BOT-SELLER123' }) })
+    const data = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(data.trackingId).toBe('BOT-SELLER123')
+    expect(data.status).toBe('PENDING')
+  })
+
   it('should return 404 when trackingId does not exist', async () => {
     const buyerId = 'user_buyer_123'
     mockedAuth.mockResolvedValue({ userId: buyerId, sessionClaims: null, redirectToSignIn: vi.fn() } as never)
