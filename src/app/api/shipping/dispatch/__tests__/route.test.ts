@@ -3,6 +3,16 @@ import { POST } from '../route'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { NextRequest } from 'next/server'
+import * as jose from 'jose'
+
+vi.mock('jose', async () => {
+  return {
+    createRemoteJWKSet: vi.fn(() => ({})),
+    jwtVerify: vi.fn(),
+  }
+})
+
+const mockedJwtVerify = vi.mocked(jose.jwtVerify)
 
 const mockedAuth = vi.mocked(auth)
 const mockedPrisma = {
@@ -192,5 +202,47 @@ describe('POST /api/shipping/dispatch', () => {
     expect(response.status).toBe(500)
     expect(data.error).toBe('TRACKING_GENERATION_FAILED')
     expect(mockedPrisma.shipment.create).toHaveBeenCalledTimes(3)
+  })
+
+  it('should authenticate via Bearer JWT and create shipment when cookie auth is absent', async () => {
+    mockedAuth.mockResolvedValue({ userId: null, sessionClaims: null, redirectToSignIn: vi.fn() } as never)
+    mockedJwtVerify.mockResolvedValue({
+      payload: { sub: 'user_123' },
+    } as never)
+    mockedPrisma.shipment.findFirst.mockResolvedValue(null)
+    mockedPrisma.shipment.create.mockResolvedValue({
+      id: 'shp-jwt',
+      tracking_id: 'BOT-JWT12345',
+      order_id: 'ORD-JWT',
+      seller_id: 'user_123',
+      buyer_id: 'user_456',
+      delivery_address: 'Calle JWT',
+      type: 'PLANTA_VIVA',
+      status: 'PENDING',
+    } as never)
+    mockedPrisma.trackingEvent.create.mockResolvedValue({ id: 'evt-jwt' } as never)
+
+    const request = new NextRequest('http://localhost:3000/api/shipping/dispatch', {
+      method: 'POST',
+      body: JSON.stringify({
+        orderRef: 'ORD-JWT',
+        sellerId: 'user_123',
+        buyerId: 'user_456',
+        deliveryAddress: 'Calle JWT',
+        type: 'PLANTA_VIVA',
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer test-jwt-token',
+      },
+    })
+
+    const response = await POST(request)
+    const data = await response.json()
+
+    expect(response.status).toBe(201)
+    expect(data.status).toBe('CREATED')
+    expect(data.trackingId).toMatch(/^BOT-/)
+    expect(mockedJwtVerify).toHaveBeenCalledTimes(1)
   })
 })
