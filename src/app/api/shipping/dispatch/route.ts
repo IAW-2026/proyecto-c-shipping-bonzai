@@ -7,6 +7,7 @@ const clerkIdRegex = /^user_[a-zA-Z0-9]+$/
 
 const dispatchSchema = z.object({
   orderRef: z.string().min(1),
+  transactionId: z.string().min(1),
   sellerId: z.string().regex(clerkIdRegex),
   buyerId: z.string().regex(clerkIdRegex),
   deliveryAddress: z.string().min(1),
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const { orderRef, sellerId, buyerId, deliveryAddress, type } = validated.data
+    const { orderRef, transactionId, sellerId, buyerId, deliveryAddress, type } = validated.data
 
     if (sellerId !== userId) {
       return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 })
@@ -72,6 +73,7 @@ export async function POST(request: Request) {
           data: {
             tracking_id: trackingId,
             order_id: orderRef,
+            transaction_id: transactionId,
             seller_id: sellerId,
             buyer_id: buyerId,
             delivery_address: deliveryAddress,

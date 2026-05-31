@@ -39,6 +39,7 @@ async function main() {
       {
         tracking_id: 'TRK-PEND-001',
         order_id: 'ord_buyApp_101',
+        transaction_id: 'txn_ord_buyApp_101',
         buyer_id: 'user_2buyer001',
         seller_id: 'user_2seller001',
         status: 'PENDING',
@@ -49,6 +50,7 @@ async function main() {
       {
         tracking_id: 'TRK-PEND-002',
         order_id: 'ord_buyApp_102',
+        transaction_id: 'txn_ord_buyApp_102',
         buyer_id: 'user_2buyer002',
         seller_id: 'user_2seller002',
         status: 'PENDING',
@@ -64,6 +66,7 @@ async function main() {
       {
         tracking_id: 'TRK-TRANS-001',
         order_id: 'ord_buyApp_201',
+        transaction_id: 'txn_ord_buyApp_201',
         buyer_id: 'user_2buyer003',
         seller_id: 'user_2seller003',
         status: 'IN_TRANSIT',
@@ -75,6 +78,7 @@ async function main() {
       {
         tracking_id: 'TRK-TRANS-002',
         order_id: 'ord_buyApp_202',
+        transaction_id: 'txn_ord_buyApp_202',
         buyer_id: 'user_2buyer004',
         seller_id: 'user_2seller004',
         status: 'IN_TRANSIT',
@@ -90,6 +94,7 @@ async function main() {
     data: {
       tracking_id: 'TRK-DELIV-001',
       order_id: 'ord_buyApp_301',
+      transaction_id: 'txn_ord_buyApp_301',
       buyer_id: 'user_2buyer005',
       seller_id: 'user_2seller005',
       status: 'DELIVERED',
@@ -105,6 +110,7 @@ async function main() {
     data: {
       tracking_id: 'TRK-DELIV-002',
       order_id: 'ord_buyApp_302',
+      transaction_id: 'txn_ord_buyApp_302',
       buyer_id: 'user_2buyer006',
       seller_id: 'user_2seller006',
       status: 'DELIVERED',

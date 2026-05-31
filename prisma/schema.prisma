@@ -55,6 +55,7 @@ model Shipment {
   id                String         @id @default(uuid()) @db.Uuid
   tracking_id       String         @unique
   order_id          String
+  transaction_id    String
   buyer_id          String
   seller_id         String
   status           ShipmentStatus @default(PENDING)
