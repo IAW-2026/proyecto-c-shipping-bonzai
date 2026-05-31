@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
+import { verifyRequestAuth } from '@/lib/auth-verify'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { NextResponse } from 'next/server'
@@ -24,7 +24,7 @@ function generateTrackingId(): string {
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await auth()
+    const { userId } = await verifyRequestAuth(request)
     if (!userId) {
       return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
     }
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
           'code' in e &&
           e.code === 'P2002'
 
-        if (!isUniqueViolation || attempts >= 2) {
+        if (!isUniqueViolation || attempts >= 3) {
           throw e
         }
         attempts++

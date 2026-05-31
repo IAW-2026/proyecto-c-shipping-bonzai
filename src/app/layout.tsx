@@ -1,6 +1,7 @@
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Newsreader, Manrope } from 'next/font/google'
+import { UserBubble } from '@/components/UserBubble'
 import './globals.css'
 
 const newsreader = Newsreader({
@@ -31,17 +32,9 @@ export default function RootLayout({
         lang='es'
         className={`${newsreader.variable} ${manrope.variable} antialiased`}
       >
-        <body className={`${newsreader.variable} ${manrope.variable} antialiased bg-bone text-evergreen`}>
-          <header className='flex justify-end items-center p-4 gap-4 h-16 fixed top-0 right-0 z-50'>
-            <Show when='signed-out'>
-              <SignInButton />
-              <SignUpButton />
-            </Show>
-            <Show when='signed-in'>
-              <UserButton />
-            </Show>
-          </header>
+        <body className={`${newsreader.variable} ${manrope.variable} antialiased bg-background text-primary`}>
           {children}
+          <UserBubble />
         </body>
       </html>
     </ClerkProvider>
