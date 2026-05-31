@@ -2,7 +2,7 @@
 
 import { useUser, useClerk } from '@clerk/nextjs'
 import { useState, useRef, useEffect } from 'react'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, User, Package } from 'lucide-react'
 
 function getInitials(firstName?: string | null, lastName?: string | null): string {
   const f = firstName?.charAt(0) || ''
@@ -69,6 +69,13 @@ export function UserBubble() {
               {email}
             </p>
           </div>
+          <a
+            href="/shipping"
+            className="flex items-center gap-2 w-full px-2 py-1.5 text-primary hover:bg-surface-low rounded-lg font-sans text-xs transition-colors"
+          >
+            <Package size={14} strokeWidth={1.5} />
+            Mis Envíos
+          </a>
           <div className="h-px bg-surface-container my-2" />
           <button
             onClick={() => signOut({ redirectUrl: '/' })}

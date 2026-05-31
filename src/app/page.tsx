@@ -57,13 +57,31 @@ export default async function HomePage() {
           hasta insumos especializados, cada especimen es un registro curado en tránsito.
         </p>
         {isAuthenticated && hasRole ? (
-          <a
-            href={dashboardUrl}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl text-sm uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
-          >
-            <ArrowRight size={16} strokeWidth={1.5} />
-            Ir al Panel
-          </a>
+          <div className="flex flex-col items-center gap-3">
+            <a
+              href={dashboardUrl}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl text-sm uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
+            >
+              <ArrowRight size={16} strokeWidth={1.5} />
+              Ir al Panel
+            </a>
+            <a
+              href="/shipping"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-surface-high text-primary rounded-xl text-sm font-sans font-medium hover:bg-surface-container transition-all"
+            >
+              Mis Envíos
+            </a>
+          </div>
+        ) : isAuthenticated ? (
+          <div className="flex flex-col items-center gap-3">
+            <a
+              href="/shipping"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl text-sm uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
+            >
+              <ArrowRight size={16} strokeWidth={1.5} />
+              Mis Envíos
+            </a>
+          </div>
         ) : (
           <Link
             href="/sign-in"
