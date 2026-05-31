@@ -12,6 +12,7 @@ const isPublicRoute = createRouteMatcher([
   '/api/shipping/dispatch',
   '/api/shipping/(.*)',
   '/test-dispatch',
+  '/shipping(.*)',
 ])
 
 const isAdminRoute = createRouteMatcher(['/admin(.*)'])
