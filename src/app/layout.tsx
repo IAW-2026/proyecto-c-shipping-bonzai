@@ -19,6 +19,11 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: 'Portal de Envíos Bonzai',
   description: 'Ecosistema botánico de envíos',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({
