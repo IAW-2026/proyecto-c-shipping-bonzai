@@ -57,10 +57,14 @@ export async function getLocalProfile(): Promise<{
   const roles = await getUserRoles()
 
   if (roles.includes('operator_shipping')) {
-    const operator = await prisma.logisticOperator.findUnique({
+    let operator = await prisma.logisticOperator.findUnique({
       where: { clerk_user_id: userId }
     })
-    if (!operator) return null
+    if (!operator) {
+      operator = await prisma.logisticOperator.create({
+        data: { clerk_user_id: userId, status: 'ACTIVE' }
+      })
+    }
     return {
       type: 'operator',
       profile: operator,
@@ -69,10 +73,14 @@ export async function getLocalProfile(): Promise<{
   }
 
   if (roles.includes('driver_shipping')) {
-    const driver = await prisma.driver.findUnique({
+    let driver = await prisma.driver.findUnique({
       where: { clerk_user_id: userId }
     })
-    if (!driver) return null
+    if (!driver) {
+      driver = await prisma.driver.create({
+        data: { clerk_user_id: userId, status: 'AVAILABLE' }
+      })
+    }
     return {
       type: 'driver',
       profile: driver,

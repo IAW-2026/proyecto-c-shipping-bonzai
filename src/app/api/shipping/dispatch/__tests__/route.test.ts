@@ -43,6 +43,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: 'ORD-001',
+      transactionId: 'txn-001',
       sellerId: 'user_123',
       buyerId: 'user_456',
       deliveryAddress: 'Calle 123',
@@ -61,6 +62,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: '',
+      transactionId: '',
       sellerId: 'invalid-id',
       buyerId: 'also-invalid',
       deliveryAddress: '',
@@ -79,6 +81,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: 'ORD-001',
+      transactionId: 'txn-001',
       sellerId: 'user_123',
       buyerId: 'user_456',
       deliveryAddress: 'Calle 123',
@@ -107,6 +110,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: 'ORD-001',
+      transactionId: 'txn-001',
       sellerId: 'user_123',
       buyerId: 'user_456',
       deliveryAddress: 'Calle 123',
@@ -136,6 +140,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: 'ORD-001',
+      transactionId: 'txn-001',
       sellerId: 'user_123',
       buyerId: 'user_456',
       deliveryAddress: 'Calle 123',
@@ -156,6 +161,7 @@ describe('POST /api/shipping/dispatch', () => {
       id: 'shp-new',
       tracking_id: 'BOT-NEW12345',
       order_id: 'ORD-NEW',
+      transaction_id: 'txn-new',
       seller_id: 'user_123',
       buyer_id: 'user_456',
       delivery_address: 'Calle 123',
@@ -166,6 +172,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: 'ORD-NEW',
+      transactionId: 'txn-new',
       sellerId: 'user_123',
       buyerId: 'user_456',
       deliveryAddress: 'Calle 123',
@@ -190,6 +197,7 @@ describe('POST /api/shipping/dispatch', () => {
 
     const request = createRequest({
       orderRef: 'ORD-FAIL',
+      transactionId: 'txn-fail',
       sellerId: 'user_123',
       buyerId: 'user_456',
       deliveryAddress: 'Calle 123',
@@ -214,6 +222,7 @@ describe('POST /api/shipping/dispatch', () => {
       id: 'shp-jwt',
       tracking_id: 'BOT-JWT12345',
       order_id: 'ORD-JWT',
+      transaction_id: 'txn-jwt',
       seller_id: 'user_123',
       buyer_id: 'user_456',
       delivery_address: 'Calle JWT',
@@ -226,6 +235,7 @@ describe('POST /api/shipping/dispatch', () => {
       method: 'POST',
       body: JSON.stringify({
         orderRef: 'ORD-JWT',
+        transactionId: 'txn-jwt',
         sellerId: 'user_123',
         buyerId: 'user_456',
         deliveryAddress: 'Calle JWT',
