@@ -1,6 +1,5 @@
 import { Sidebar } from './components/Sidebar'
 import { Footer } from './components/Footer'
-import { ThemeToggle } from './components/ThemeToggle'
 
 export default function OperatorLayout({
   children,
@@ -14,7 +13,6 @@ export default function OperatorLayout({
         {children}
         <Footer />
       </div>
-      <ThemeToggle />
     </div>
   )
 }

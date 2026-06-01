@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { Shipment, Driver, LogisticOperator, TrackingEvent } from '@prisma/client'
 import { StatusBadge } from './StatusBadge'
 import { Timeline } from './Timeline'
@@ -28,7 +29,7 @@ export function ShipmentDrawer({
     }
   }, [])
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50">
       <div
         className="absolute inset-0 bg-primary/20 backdrop-blur-sm"
@@ -48,7 +49,7 @@ export function ShipmentDrawer({
             </button>
           </div>
 
-          <h2 className="font-display text-4xl text-primary mb-4">
+          <h2 className="font-display text-4xl text-primary mb-4 break-all">
             {shipment.tracking_id}
           </h2>
           <div className="mb-8">
@@ -56,46 +57,46 @@ export function ShipmentDrawer({
           </div>
 
           <div className="space-y-6 mb-10">
-            <div className="bg-surface-low rounded-xl p-5">
+            <div className="bg-surface-low rounded-xl p-5 min-w-0">
               <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                 Delivery Address
               </p>
-              <p className="font-sans text-sm text-primary">
+              <p className="font-sans text-sm text-primary break-all">
                 {shipment.delivery_address}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-surface-low rounded-xl p-5">
+              <div className="bg-surface-low rounded-xl p-5 min-w-0">
                 <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Order Ref
                 </p>
-                <p className="font-sans text-sm text-primary">
+                <p className="font-sans text-sm text-primary break-all">
                   {shipment.order_id}
                 </p>
               </div>
-              <div className="bg-surface-low rounded-xl p-5">
+              <div className="bg-surface-low rounded-xl p-5 min-w-0">
                 <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Type
                 </p>
-                <p className="font-sans text-sm text-primary">
+                <p className="font-sans text-sm text-primary break-all">
                   {shipment.type}
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-surface-low rounded-xl p-5">
+              <div className="bg-surface-low rounded-xl p-5 min-w-0">
                 <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Buyer
                 </p>
-                <p className="font-sans text-sm text-primary">
+                <p className="font-sans text-sm text-primary break-all">
                   {shipment.buyer_id}
                 </p>
               </div>
-              <div className="bg-surface-low rounded-xl p-5">
+              <div className="bg-surface-low rounded-xl p-5 min-w-0">
                 <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
                   Seller
                 </p>
-                <p className="font-sans text-sm text-primary">
+                <p className="font-sans text-sm text-primary break-all">
                   {shipment.seller_id}
                 </p>
               </div>
@@ -122,6 +123,7 @@ export function ShipmentDrawer({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Users, LayoutDashboard, Truck } from 'lucide-react'
+import { Users, Sprout, LayoutDashboard, Truck } from 'lucide-react'
 
 const navItems = [
   { href: '/admin/onboarding', label: 'Nuevos Especímenes', icon: Users },
+  { href: '/admin/jardineros', label: 'Jardineros', icon: Sprout },
   { href: '/operator/dashboard', label: 'Shipping Overview', icon: LayoutDashboard },
   { href: '/driver', label: 'Vista del Repartidor', icon: Truck },
 ]

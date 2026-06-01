@@ -2,14 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Package, BarChart3, Settings, Shield } from 'lucide-react'
+import { LayoutDashboard, BarChart3, Settings, Shield } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
 
 const navItems = [
   { href: '/operator/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/operator/dashboard', label: 'Shipping', icon: Package },
-  { href: '/operator/dashboard', label: 'Analytics', icon: BarChart3 },
-  { href: '/operator/dashboard', label: 'Settings', icon: Settings },
+  { href: '/operator/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/operator/settings', label: 'Settings', icon: Settings },
 ]
 
 export function Sidebar() {

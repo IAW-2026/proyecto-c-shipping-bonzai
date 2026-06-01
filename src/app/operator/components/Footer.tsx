@@ -24,7 +24,7 @@ export function Footer() {
           <span className="hover:text-primary transition-colors cursor-pointer">Sustainability</span>
         </div>
         <p className="text-[10px] text-secondary uppercase tracking-widest">
-          2024 Botanical Curator. All Rights Reserved.
+          2026 Botanical Curator. All Rights Reserved.
         </p>
       </div>
     </footer>
