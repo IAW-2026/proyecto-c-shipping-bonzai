@@ -8,7 +8,7 @@ export async function assignDriver(shipmentId: string, driverId: string) {
     where: { id: shipmentId },
     data: {
       driver_id: driverId,
-      status: 'IN_TRANSIT',
+      status: 'ASSIGNED',
     },
   })
   revalidatePath('/operator/dashboard')

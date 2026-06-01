@@ -22,6 +22,7 @@ export function DispatchTestForm() {
   } | null>(null)
   const [formData, setFormData] = useState({
     orderRef: `ORD-${Date.now()}`,
+    transactionId: `txn-${Date.now()}`,
     buyerId: 'user_456',
     deliveryAddress: 'Jardin Botanico, Calle 45',
     type: 'PLANTA_VIVA',
@@ -64,6 +65,7 @@ export function DispatchTestForm() {
         },
         body: JSON.stringify({
           orderRef: formData.orderRef,
+          transactionId: formData.transactionId,
           sellerId: user.id,
           buyerId: formData.buyerId,
           deliveryAddress: formData.deliveryAddress,
@@ -91,6 +93,7 @@ export function DispatchTestForm() {
   const handleReset = () => {
     setFormData({
       orderRef: `ORD-${Date.now()}`,
+      transactionId: `txn-${Date.now()}`,
       buyerId: 'user_456',
       deliveryAddress: 'Jardin Botanico, Calle 45',
       type: 'PLANTA_VIVA',
@@ -110,6 +113,7 @@ export function DispatchTestForm() {
         },
         body: JSON.stringify({
           orderRef: '',
+          transactionId: '',
           sellerId: 'invalid-id',
           buyerId: '',
           deliveryAddress: '',
@@ -171,6 +175,21 @@ export function DispatchTestForm() {
               />
             </div>
 
+            <div>
+              <label className="block font-sans text-xs text-secondary uppercase tracking-wider mb-1.5">
+                Transaction ID
+              </label>
+              <input
+                type="text"
+                value={formData.transactionId}
+                onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
+                className="w-full h-11 bg-surface-low rounded-xl px-4 font-sans text-sm text-primary border-none focus:ring-2 focus:ring-primary/20"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block font-sans text-xs text-secondary uppercase tracking-wider mb-1.5">
                 Buyer ID

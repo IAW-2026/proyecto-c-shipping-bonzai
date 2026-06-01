@@ -5,15 +5,14 @@ import { Search, SlidersHorizontal } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 const statusOptions = [
-  { value: 'ALL', label: 'All' },
-  { value: 'PENDING', label: 'Pending' },
-  { value: 'ASSIGNED', label: 'Assigned' },
-  { value: 'IN_TRANSIT', label: 'In Transit' },
-  { value: 'DELIVERED', label: 'Delivered' },
-  { value: 'CANCELLED', label: 'Cancelled' },
+  { value: 'ALL', label: 'Todos' },
+  { value: 'ASSIGNED', label: 'Asignado' },
+  { value: 'IN_TRANSIT', label: 'En tránsito' },
+  { value: 'DELIVERED', label: 'Entregado' },
+  { value: 'CANCELLED', label: 'Cancelado' },
 ]
 
-export function SearchFilterBar() {
+export function DriverFilterBar() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [search, setSearch] = useState(searchParams.get('search') || '')
@@ -24,8 +23,7 @@ export function SearchFilterBar() {
       const params = new URLSearchParams()
       if (newSearch) params.set('search', newSearch)
       if (newStatus && newStatus !== 'ALL') params.set('status', newStatus)
-      params.set('page', '1')
-      router.push(`/operator/dashboard?${params.toString()}`)
+      router.push(`/driver?${params.toString()}`)
     },
     [router]
   )
@@ -51,7 +49,7 @@ export function SearchFilterBar() {
           type="text"
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Search tracking ID..."
+          placeholder="Buscar tracking ID..."
           className="w-full pl-11 pr-4 py-3 bg-surface-low rounded-xl text-sm font-sans text-primary placeholder:text-secondary/50 focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all"
         />
       </div>
