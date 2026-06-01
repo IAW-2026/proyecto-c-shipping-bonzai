@@ -49,7 +49,7 @@ export async function confirmPickup(shipmentId: string) {
       return { error: 'FORBIDDEN' }
     }
 
-    if (shipment.status !== 'PENDING') {
+    if (shipment.status !== 'ASSIGNED') {
       return { error: 'INVALID_STATUS' }
     }
 

@@ -8,6 +8,7 @@ import { getPoeticMessage } from '@/lib/tracking-messages'
 function getStatusLabel(status: string): string {
   const labels: Record<string, string> = {
     PENDING: 'Pendiente',
+    ASSIGNED: 'Asignado',
     IN_TRANSIT: 'En tránsito',
     DELIVERED: 'Entregado',
     CANCELLED: 'Cancelado',
@@ -18,6 +19,7 @@ function getStatusLabel(status: string): string {
 function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
     PENDING: 'bg-amber-50 text-amber-700',
+    ASSIGNED: 'bg-violet-50 text-violet-700',
     IN_TRANSIT: 'bg-blue-50 text-blue-700',
     DELIVERED: 'bg-emerald-50 text-emerald-700',
     CANCELLED: 'bg-red-50 text-red-700',
@@ -138,7 +140,7 @@ export function DriverDashboard({
     setLoading(true)
 
     const res =
-      selectedShipment.status === 'PENDING'
+      selectedShipment.status === 'ASSIGNED'
         ? await confirmPickup(selectedShipment.id)
         : await confirmDelivery(selectedShipment.id)
 
@@ -232,7 +234,7 @@ export function DriverDashboard({
               >
                 {loading
                   ? 'Procesando...'
-                  : selectedShipment.status === 'PENDING'
+                  : selectedShipment.status === 'ASSIGNED'
                     ? 'Marcar como retirado'
                     : 'Marcar como entregado'}
               </button>

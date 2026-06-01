@@ -64,24 +64,24 @@ async function main() {
   await prisma.shipment.createMany({
     data: [
       {
-        tracking_id: 'TRK-TRANS-001',
+        tracking_id: 'TRK-ASSIGN-001',
         order_id: 'ord_buyApp_201',
         transaction_id: 'txn_ord_buyApp_201',
         buyer_id: 'user_2buyer003',
         seller_id: 'user_2seller003',
-        status: 'IN_TRANSIT',
+        status: 'ASSIGNED',
         delivery_address: 'Boulevard Los Robles 789, Distrito Floral',
         type: 'FRAGIL',
         operator_id: operator.id,
         driver_id: driverAssigned.id
       },
       {
-        tracking_id: 'TRK-TRANS-002',
+        tracking_id: 'TRK-ASSIGN-002',
         order_id: 'ord_buyApp_202',
         transaction_id: 'txn_ord_buyApp_202',
         buyer_id: 'user_2buyer004',
         seller_id: 'user_2seller004',
-        status: 'IN_TRANSIT',
+        status: 'ASSIGNED',
         delivery_address: 'Pasaje del Sol 101, Zona Centro',
         type: 'SEMILLAS',
         operator_id: operator.id,
@@ -90,25 +90,24 @@ async function main() {
     ]
   })
 
-  const delivered1 = await prisma.shipment.create({
+  const intransit1 = await prisma.shipment.create({
     data: {
-      tracking_id: 'TRK-DELIV-001',
+      tracking_id: 'TRK-TRANS-001',
       order_id: 'ord_buyApp_301',
       transaction_id: 'txn_ord_buyApp_301',
       buyer_id: 'user_2buyer005',
       seller_id: 'user_2seller005',
-      status: 'DELIVERED',
+      status: 'IN_TRANSIT',
       delivery_address: 'Calle Los Pinos 222, Residencial Bosque',
       type: 'PLANTA_VIVA',
       operator_id: operator.id,
       driver_id: driverAvailable.id,
-      delivered_at: now
     }
   })
 
-  const delivered2 = await prisma.shipment.create({
+  const delivered1 = await prisma.shipment.create({
     data: {
-      tracking_id: 'TRK-DELIV-002',
+      tracking_id: 'TRK-DELIV-001',
       order_id: 'ord_buyApp_302',
       transaction_id: 'txn_ord_buyApp_302',
       buyer_id: 'user_2buyer006',
@@ -123,12 +122,17 @@ async function main() {
   })
 
   const eventsData = []
-  
-  for (const ship of [delivered1, delivered2]) {
+
+  for (const ship of [intransit1, delivered1]) {
     eventsData.push(
-      { shipment_id: ship.id, status: 'Recibido', timestamp: twoDaysAgo },
-      { shipment_id: ship.id, status: 'En camino', timestamp: yesterday },
-      { shipment_id: ship.id, status: 'Entregado', timestamp: now }
+      { shipment_id: ship.id, status: 'RECIBIDO_EN_ORIGEN', timestamp: twoDaysAgo },
+      { shipment_id: ship.id, status: 'EN_TRANSITO', timestamp: yesterday },
+    )
+  }
+
+  if (delivered1) {
+    eventsData.push(
+      { shipment_id: delivered1.id, status: 'ENTREGADO', timestamp: now }
     )
   }
 

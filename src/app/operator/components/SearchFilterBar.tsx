@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react'
 const statusOptions = [
   { value: 'ALL', label: 'All' },
   { value: 'PENDING', label: 'Pending' },
+  { value: 'ASSIGNED', label: 'Assigned' },
   { value: 'IN_TRANSIT', label: 'In Transit' },
   { value: 'DELIVERED', label: 'Delivered' },
   { value: 'CANCELLED', label: 'Cancelled' },

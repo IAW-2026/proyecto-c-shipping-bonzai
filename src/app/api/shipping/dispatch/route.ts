@@ -109,6 +109,20 @@ export async function POST(request: Request) {
       },
     })
 
+    try {
+      const sellerUrl = `${process.env.SELLER_SERVICE_URL}/api/orders/${orderRef}/tracking`
+      await fetch(sellerUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-service-key': process.env.SELLER_SERVICE_KEY || '',
+        },
+        body: JSON.stringify({ trackingId: shipment.tracking_id }),
+      })
+    } catch (error) {
+      console.error('Seller notification error:', error)
+    }
+
     return NextResponse.json(
       { trackingId: shipment.tracking_id, status: 'CREATED' },
       { status: 201 }
