@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: 'Portal de Envíos Bonzai',
   description: 'Ecosistema botánico de envíos',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon-v2.ico',
     apple: '/apple-icon.png',
   },
   manifest: '/manifest.json',
