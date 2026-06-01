@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { confirmPickup, confirmDelivery } from '@/lib/actions/driver'
 import { Package, MapPin, Copy, Check, Sprout, Leaf } from 'lucide-react'
+import { SHIPMENT_TYPE_LABELS, TRACKING_STATUS_LABELS } from '@/lib/translations'
 import { getPoeticMessage } from '@/lib/tracking-messages'
 
 function getStatusLabel(status: string): string {
@@ -93,7 +94,7 @@ export function DriverShipmentCard({
 
       <div className="flex items-start gap-2 mb-3">
         <Package size={16} className="text-secondary shrink-0 mt-0.5" strokeWidth={1.5} />
-        <span className="font-sans text-sm text-secondary">{shipment.type}</span>
+          <span className="font-sans text-sm text-secondary">{SHIPMENT_TYPE_LABELS[shipment.type] || shipment.type}</span>
       </div>
 
       <div className="flex items-start gap-2 mb-3">
@@ -182,7 +183,7 @@ export function DriverDashboard({
                 <Package size={16} className="text-secondary shrink-0 mt-0.5" strokeWidth={1.5} />
                 <div>
                   <p className="font-sans text-xs text-secondary uppercase tracking-wider">Tipo</p>
-                  <p className="font-sans text-sm text-primary">{selectedShipment.type}</p>
+                  <p className="font-sans text-sm text-primary">{SHIPMENT_TYPE_LABELS[selectedShipment.type] || selectedShipment.type}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -212,7 +213,7 @@ export function DriverDashboard({
                         <div className="w-2 h-2 bg-primary rounded-full" />
                       </div>
                       <div>
-                        <p className="font-sans text-sm font-medium text-primary">{event.status}</p>
+                        <p className="font-sans text-sm font-medium text-primary">{TRACKING_STATUS_LABELS[event.status] || event.status}</p>
                         <p className="font-sans text-sm text-secondary mt-1">
                           {getPoeticMessage(event.status)}
                         </p>

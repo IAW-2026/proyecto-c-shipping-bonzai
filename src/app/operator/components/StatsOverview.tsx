@@ -13,12 +13,12 @@ export async function StatsOverview() {
       <div className="bg-surface-high p-8 rounded-xl border border-outline-ghost shadow-sm relative overflow-hidden group">
         <div className="relative z-10">
           <p className="text-[11px] uppercase tracking-widest text-secondary mb-4">
-            Pending Shipment
+            Envíos Pendientes
           </p>
           <h3 className="font-display text-5xl font-light mb-2 text-primary">
             {pending}
           </h3>
-          <p className="text-sm text-secondary">Ready for pickup today</p>
+          <p className="text-sm text-secondary">Listos para retiro hoy</p>
         </div>
         <Package
           size={120}
@@ -30,13 +30,13 @@ export async function StatsOverview() {
       <div className="bg-primary p-8 rounded-xl shadow-lg relative overflow-hidden group">
         <div className="relative z-10">
           <p className="text-[11px] uppercase tracking-widest text-white/60 mb-4">
-            In Transit
+            En Tránsito
           </p>
           <h3 className="font-display text-5xl font-light mb-2 text-white">
             {inTransit}
           </h3>
           <div className="flex items-center gap-2 text-emerald-300 text-sm">
-            <span>On the road</span>
+            <span>En camino</span>
           </div>
         </div>
         <Truck
@@ -49,12 +49,12 @@ export async function StatsOverview() {
       <div className="bg-surface-high p-8 rounded-xl border border-outline-ghost shadow-sm relative overflow-hidden group">
         <div className="relative z-10">
           <p className="text-[11px] uppercase tracking-widest text-secondary mb-4">
-            Delivered (MTD)
+            Entregados (MTD)
           </p>
           <h3 className="font-display text-5xl font-light mb-2 text-primary">
             {delivered}
           </h3>
-          <p className="text-sm text-secondary">Successfully completed</p>
+          <p className="text-sm text-secondary">Completados exitosamente</p>
         </div>
         <CheckCircle
           size={120}

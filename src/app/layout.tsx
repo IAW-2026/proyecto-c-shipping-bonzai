@@ -17,8 +17,13 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
-  title: 'Shipping App',
-  description: 'Ecosistema botanico de envios',
+  title: 'Portal de Envíos Bonzai',
+  description: 'Ecosistema botánico de envíos',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({
@@ -29,7 +34,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html
-        lang='es'
+        lang='es-AR'
         className={`${newsreader.variable} ${manrope.variable} antialiased`}
       >
         <body className={`${newsreader.variable} ${manrope.variable} antialiased bg-background text-primary`}>

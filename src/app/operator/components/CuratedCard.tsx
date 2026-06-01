@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Shipment, Driver, LogisticOperator, TrackingEvent, ShipmentType } from '@prisma/client'
+import { Shipment, Driver, LogisticOperator, TrackingEvent } from '@prisma/client'
+import { SHIPMENT_TYPE_LABELS } from '@/lib/translations'
 import { StatusBadge } from './StatusBadge'
 import { ShipmentDrawer } from './ShipmentDrawer'
 import { AssignDriverModal } from './AssignDriverModal'
@@ -13,13 +14,7 @@ type ShipmentWithRelations = Shipment & {
   tracking_events: TrackingEvent[]
 }
 
-const typeLabels: Record<ShipmentType, string> = {
-  PLANTA_VIVA: 'Planta Viva',
-  INSUMOS: 'Insumos',
-  FRAGIL: 'Fragil',
-  SEMILLAS: 'Semillas',
-  OTROS: 'Otros',
-}
+const typeLabels = SHIPMENT_TYPE_LABELS
 
 export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -50,7 +45,7 @@ export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
           <div className="flex items-center gap-6 md:gap-8">
             <div className="hidden md:block text-right">
               <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
-                Order
+                Pedido
               </p>
               <p className="font-sans text-sm text-primary">
                 {shipment.order_id}
@@ -58,7 +53,7 @@ export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
             </div>
             <div className="hidden md:block text-right">
               <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
-                Created
+                Creado
               </p>
               <p className="font-sans text-sm text-primary">
                 {new Date(shipment.created_at).toLocaleDateString('es-ES', {
@@ -76,13 +71,13 @@ export function CuratedCard({ shipment }: { shipment: ShipmentWithRelations }) {
                 className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-xs uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
               >
                 <Truck size={14} strokeWidth={1.5} />
-                <span className="hidden sm:inline">Assign</span>
+                <span className="hidden sm:inline">Asignar</span>
               </button>
             )}
             {shipment.driver && (
               <div className="text-right">
                 <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
-                  Driver
+                  Repartidor
                 </p>
                 <p className="font-sans text-sm text-primary">
                   {shipment.driver.clerk_user_id.slice(0, 12)}...

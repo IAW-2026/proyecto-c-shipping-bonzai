@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
+import { SHIPMENT_TYPE_LABELS } from '@/lib/translations'
 import { getPoeticMessage } from '@/lib/tracking-messages'
 import { Package, ArrowRight, Clock } from 'lucide-react'
 
@@ -101,7 +102,7 @@ export default async function ShippingPage() {
                     </p>
                     <div className="flex items-center gap-4 mt-3">
                       <span className="font-sans text-xs text-secondary/60">
-                        {shipment.type}
+                        {SHIPMENT_TYPE_LABELS[shipment.type] || shipment.type}
                       </span>
                       <span className="font-sans text-xs text-secondary/60 flex items-center gap-1">
                         <Clock size={12} strokeWidth={1.5} />

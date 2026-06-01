@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { confirmPickup, confirmDelivery } from '@/lib/actions/driver'
+import { SHIPMENT_TYPE_LABELS, TRACKING_STATUS_LABELS } from '@/lib/translations'
 import { Package, MapPin, Copy, Check, Truck, CheckCircle } from 'lucide-react'
 
 function getStatusLabel(status: string): string {
@@ -91,7 +92,7 @@ export function DriverShipmentCard({ shipment,isSupervisor }: { shipment: Shipme
 
           <div className="flex items-start gap-2 mb-3">
             <Package size={16} className="text-secondary shrink-0 mt-0.5" strokeWidth={1.5} />
-            <span className="font-sans text-sm text-secondary">{shipment.type}</span>
+            <span className="font-sans text-sm text-secondary">{SHIPMENT_TYPE_LABELS[shipment.type] || shipment.type}</span>
           </div>
 
           <div className="flex items-start gap-2 mb-3">
@@ -112,7 +113,7 @@ export function DriverShipmentCard({ shipment,isSupervisor }: { shipment: Shipme
 
           {lastEvent && (
             <p className="font-sans text-xs text-secondary/60">
-              Último registro: {lastEvent.status} — {new Date(lastEvent.timestamp).toLocaleString('es-ES', {
+              Último registro: {TRACKING_STATUS_LABELS[lastEvent.status] || lastEvent.status} — {new Date(lastEvent.timestamp).toLocaleString('es-ES', {
                 month: 'short',
                 day: 'numeric',
                 hour: '2-digit',

@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
+import { SHIPMENT_TYPE_LABELS, TRACKING_STATUS_LABELS } from '@/lib/translations'
 import { getPoeticMessage } from '@/lib/tracking-messages'
 import { Package, ArrowLeft, MapPin, Calendar, User } from 'lucide-react'
 
@@ -126,9 +127,9 @@ export default async function ShippingDetailPage({
                     </div>
                     <div>
                       <p className="font-sans text-sm font-medium text-primary">
-                        {event.status}
+                        {TRACKING_STATUS_LABELS[event.status] || event.status}
                       </p>
-                      <p className="font-sans text-sm text-secondary mt-1">
+                      <p className="font-sans text-xs text-secondary/60 mt-1">
                         {getPoeticMessage(event.status)}
                       </p>
                       <p className="font-sans text-xs text-secondary/60 mt-2">
@@ -160,7 +161,7 @@ export default async function ShippingDetailPage({
                   <p className="font-sans text-xs text-secondary uppercase tracking-wider">
                     Tipo
                   </p>
-                  <p className="font-sans text-sm text-primary">{shipment.type}</p>
+                  <p className="font-sans text-sm text-primary">{SHIPMENT_TYPE_LABELS[shipment.type] || shipment.type}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">

@@ -50,10 +50,10 @@ export default async function HomePage() {
           The Living Archive
         </h1>
         <p className="font-sans text-lg text-secondary mb-2">
-          Bonzai Shipping Portal
+          Portal de Envíos Bonzai
         </p>
         <p className="font-sans text-sm text-secondary/70 mb-12 max-w-md mx-auto">
-          Gestion del ciclo de vida de los envios botanicos. Desde plantas vivas
+          Gestion del ciclo de vida de los envíos botánicos. Desde plantas vivas
           hasta insumos especializados, cada especimen es un registro curado en tránsito.
         </p>
         {isAuthenticated && hasRole ? (

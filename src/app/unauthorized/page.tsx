@@ -110,7 +110,7 @@ export default async function UnauthorizedPage({
         </div>
 
         <p className="text-center mt-8 font-sans text-xs text-secondary/60">
-          Bonzai Shipping Portal — The Botanical Curator
+          Portal de Envíos Bonzai — The Botanical Curator
         </p>
       </div>
     </div>

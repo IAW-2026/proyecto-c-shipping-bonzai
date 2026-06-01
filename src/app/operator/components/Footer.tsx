@@ -14,17 +14,17 @@ export function Footer() {
             </span>
           </div>
           <p className="text-[10px] text-secondary uppercase tracking-widest">
-            Institutional Grade Specimen Management
+              Gestión de Especimenes de Grado Institucional
           </p>
         </div>
         <div className="flex gap-12 text-[10px] font-bold uppercase tracking-widest text-secondary">
-          <span className="hover:text-primary transition-colors cursor-pointer">Support</span>
+          <span className="hover:text-primary transition-colors cursor-pointer">Soporte</span>
           <span className="hover:text-primary transition-colors cursor-pointer">API Docs</span>
-          <span className="hover:text-primary transition-colors cursor-pointer">Security</span>
-          <span className="hover:text-primary transition-colors cursor-pointer">Sustainability</span>
+          <span className="hover:text-primary transition-colors cursor-pointer">Seguridad</span>
+          <span className="hover:text-primary transition-colors cursor-pointer">Sostenibilidad</span>
         </div>
         <p className="text-[10px] text-secondary uppercase tracking-widest">
-          2024 Botanical Curator. All Rights Reserved.
+          2026 Botanical Curator. Todos los derechos reservados.
         </p>
       </div>
     </footer>

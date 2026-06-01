@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { Driver } from '@prisma/client'
+import { DRIVER_STATUS_LABELS } from '@/lib/translations'
 import { X, User, Check } from 'lucide-react'
 import { assignDriver } from '../dashboard/actions'
 
@@ -44,7 +46,7 @@ export function AssignDriverModal({
     }
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-primary/30 backdrop-blur-[20px]"
@@ -54,7 +56,7 @@ export function AssignDriverModal({
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-display text-2xl text-primary">
-              Select Driver
+              Seleccionar Repartidor
             </h3>
             <button
               onClick={onClose}
@@ -73,7 +75,7 @@ export function AssignDriverModal({
           ) : drivers.length === 0 ? (
             <div className="text-center py-8">
               <p className="font-sans text-sm text-secondary">
-                No drivers available
+                No hay repartidores disponibles
               </p>
             </div>
           ) : (
@@ -93,7 +95,7 @@ export function AssignDriverModal({
                       {driver.clerk_user_id}
                     </p>
                     <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
-                      {driver.status}
+                      {DRIVER_STATUS_LABELS[driver.status] || driver.status}
                     </p>
                   </div>
                   <Check size={16} className="text-secondary opacity-0 group-hover:opacity-100" strokeWidth={1.5} />
@@ -108,11 +110,12 @@ export function AssignDriverModal({
         <div className="fixed top-6 right-6 z-[70]">
           <div className="backdrop-blur-[20px] bg-primary/90 text-white px-6 py-3 rounded-xl shadow-lg">
             <p className="font-sans text-sm font-medium">
-              Driver assigned successfully
+              Repartidor asignado exitosamente
             </p>
           </div>
         </div>
       )}
-    </div>
+    </div>,
+    document.body
   )
 }

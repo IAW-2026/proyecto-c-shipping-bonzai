@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Users, LayoutDashboard, Truck } from 'lucide-react'
+import { Users, Sprout, LayoutDashboard, Truck } from 'lucide-react'
 
 const navItems = [
   { href: '/admin/onboarding', label: 'Nuevos Especímenes', icon: Users },
-  { href: '/operator/dashboard', label: 'Shipping Overview', icon: LayoutDashboard },
+  { href: '/admin/gardeners', label: 'Jardineros', icon: Sprout },
+  { href: '/operator/dashboard', label: 'Resumen de Envíos', icon: LayoutDashboard },
   { href: '/driver', label: 'Vista del Repartidor', icon: Truck },
 ]
 
@@ -20,7 +21,7 @@ export function AdminSidebar() {
           The Living Archive
         </h1>
         <p className="text-[10px] uppercase tracking-[0.2em] text-secondary mt-1">
-          Bonzai Shipping Portal
+          Portal de Envíos Bonzai
         </p>
       </div>
 
