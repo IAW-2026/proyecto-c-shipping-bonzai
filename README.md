@@ -1,66 +1,75 @@
-# Shipping App | The Botanical Curator
+# Portal de Envíos Bonzai — The Botanical Curator
 
-> *"The Living Archive: Where every shipment is a curated specimen in transit."*
+## Link al Deploy de Producción
 
-## Descripcion
+https://proyecto-c-shipping-bonzai.vercel.app
 
-La **Shipping App** es el pilar logistico del ecosistema botanico. Su responsabilidad es gestionar el ciclo de vida completo de los envios, desde plantas vivas y herramientas hasta insumos especializados, asegurando que cada especimen llegue desde el vivero hasta su destino final con la precision de un archivo viviente.
+## Usuarios de Prueba
 
-## Deploy
+| Rol | Email | Contraseña |
+|---|---|---|
+| Operador | operator+clerktest@iaw.com | iawuser# |
+| Repartidor (Driver) | driver+clerktest@iaw.com | iawuser# |
+| Admin | admin+clerktest@iaw.com | iawuser# |
+| Sin rol (onboarding) | freeship1+clerktest@iaw.com | iawuser# |
+| Sin rol (onboarding) | freeship2+clerktest@iaw.com | iawuser# |
 
-[URL de Vercel](https://shipping-app.vercel.app) *(placeholder)*
+## Instrucciones de Evaluacion
 
-## Acceso por Roles
+### 1. Operador asigna un ejemplar a un repartidor
 
-La autenticacion se gestiona mediante **Clerk**. Segun tu rol, accedes a funcionalidades distintas:
+1. Inicia sesión con **operator+clerktest@iaw.com** en la pagina de sign-in.
+2. Navega a **Panel > Resumen de envíos** (sidebar izquierdo).
+3. Busca un envío en estado **"Pendiente"** usando los filtros.
+4. Haz clic en la tarjeta del envío para abrir el drawer lateral.
+5. Haz clic en el botón **"Asignar Repartidor"**.
+6. Selecciona un repartidor disponible de la lista.
+7. El envío pasa de PENDING a ASSIGNED. El repartidor ahora lo vera en su bitácora.
 
-### Operador Logistico (Admin)
+### 2. Repartidor confirma retiro y entrega
 
-- Panel `/operator/dashboard` para gestion completa de envios
-- Asignacion de repartidores a envios pendientes
-- Filtrado por estado y busqueda por tracking ID
+1. Cierra sesión e inicia sesión con **driver+clerktest@iaw.com**.
+2. Navega a la vista del repartidor (la landing page redirige automaticamente).
+3. Veras los envíos asignados en estado **"Asignado"** en el panel izquierdo.
+4. Selecciona un envío y haz clic en **"Marcar como retirado"**. El estado cambia de ASSIGNED a IN_TRANSIT. Aparece un nuevo evento en el Diario de tránsito.
+5. Haz clic en **"Marcar como entregado"**. El estado cambia a DELIVERED, se registra `delivered_at` y se notifica automaticamente a Payments App.
 
-### Repartidor (Driver)
+### 3. Visualizar seguimiento poético
 
-- Vista optimizada para dispositivos moviles
-- Confirmacion de entregas en tiempo real
+1. Sin necesidad de login, navega a `/shipping/{trackingId}` (usa cualquier tracking ID del seed, ej: BOT-DELV-001).
+2. Verás el **Diario de tránsito** con el historial completo del especimen.
+3. Cada evento muestra un mensaje poético que narra el viaje botánico: "El especimen ha comenzado su viaje desde el invernadero de origen", "El especimen navega por los caminos verdes hacia su nuevo hogar", etc.
 
-## Stack Tecnologico
+### 4. Admin asigna roles a nuevos usuarios (onboarding)
 
-| Tecnologia | Uso |
-|-----------|-----|
-| **Next.js 16** (App Router) | Framework principal con Server Components |
-| **TypeScript** | Tipado estatico para integridad de datos |
-| **Tailwind CSS** | Sistema de diseno "The Botanical Curator" |
-| **Prisma ORM** | Modelado y consultas a PostgreSQL |
-| **PostgreSQL** | Base de datos relacional para envios y eventos |
-| **Clerk** | Autenticacion y autorizacion por roles |
+1. Inicia sesion con **admin+clerktest@iaw.com**.
+2. Navega a **Nuevos Especimenes** en el sidebar.
+3. Veras una lista de usuarios de Clerk sin rol asignado (freeship1 y freeship2).
+4. Para cada uno, asigna un rol (`operator_shipping`, `driver_shipping`) y haz clic en **Aprobar**.
+5. El usuario ahora puede ingresar a la app con su nuevo rol y el lazy sync creara su registro local automaticamente.
 
-## Instalacion Local
+### 5. Admin supervisa
 
-```bash
-npm install
-npx prisma generate
-npm run dev
-```
+1. Inicia sesión con **admin+clerktest@iaw.com**.
+2. Desde el sidebar accede a:
+   - **Nuevos Especimenes**: onboarding de usuarios con roles pendientes.
+   - **Jardineros**: gestion de repartidores y operadores (suspender/reactivar).
+   - **Resumen de envíos**: dashboard completo con filtros y paginación.
+   - **Vista del Repartidor**: modo supervisor en `/driver`, solo lectura.
 
-## Variables de Entorno
+## Descripción del Proyecto
 
-Copia `.env.example` a `.env.local` y configura:
+The Botanical Curator transforma la logistica de envíos en una experiencia narrativa de alto nivel editorial. En lugar de códigos de seguimiento frios, cada producto es tratado como un **especimen botánico** que transita un ciclo de vida documentado poeticamente en su Diario de tránsito: desde el invernadero de origen hasta su destino final.
 
-```env
-DATABASE_URL="postgresql://..."
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
-CLERK_SECRET_KEY="sk_test_..."
-```
+La plataforma gestiona el ciclo completo del envío a través de tres roles: **Operadores** logisticos que reciben y asignan pedidos, **Repartidores** que transportan los especimenes confirmando retiro y entrega, y **Administradores** que supervisan el ecosistema completo gestionando el onboarding de nuevos usuarios y el estado de jardineros y operadores.
 
-## Caracteristicas Destacadas
+La aplicación se comunica con dos servicios externos en tiempo real: la **Seller App**, a la que notifica el tracking ID apenas se crea un envío (via POST con `x-service-key`), y la **Payments App**, a la que informa cuando un especimen es entregado exitosamente (via POST con `X-API-Key`). Ambas integraciones son M2M server-to-server con autenticación dual: cookies de Clerk para usuarios navegadores y JWT Bearer via jose + JWKS remoto para llamadas entre servicios.
 
-- **Paginacion y busqueda** gestionadas exclusivamente por parametros de URL (`?page=1&search=BOT-...`)
-- **Diseno accesible** siguiendo principios POUR (Perceptible, Operable, Understandable, Robust)
-- **Server Components y Server Actions** para maxima integridad de datos
-- **Sincronizacion lazy** de perfiles de usuario desde Clerk hacia Prisma
+Tecnicamente es una aplicación Next.js 16 con App Router, Prisma sobre PostgreSQL, autenticacion Clerk con roles personalizados (`operator_shipping`, `driver_shipping`, `shipping_admin`), y lazy sync que crea automaticamente los registros locales de Driver y Operator cuando un usuario con el rol correspondiente inicia sesión por primera vez.
 
-## Responsable
+## Notas para la Corrección
 
-**Arista Valentin**
+- **Sistema de diseño**: Paleta de colores Bone (#faf9f4) como fondo, Deep Evergreen (#03271a) como color primario de marca, y Moss (#526347) para textos secundarios. Tipografia: Newsreader (serif) para títulos y Manrope (sans) para cuerpo. Sin bordes de 1px — se utilizan sombras suaves y fondos contrastantes para delimitar elementos. Se implementó una estética de "bitácora botánica curada".
+- **Integración M2M real**: El endpoint `POST /api/shipping/dispatch` notifica automaticamente a la Seller App enviando el `trackingId` a `{SELLER_SERVICE_URL}/api/orders/{orderRef}/tracking`. Al confirmar entrega, la Server Action `confirmDelivery` envia una notificación a `{PAYMENTS_API_URL}/api/payments/{transaction_id}/delivered` con el header `X-API-Key`. Ambas llamadas usan `try/catch` independiente de la transacción local de Prisma para garantizar que el flujo principal nunca se bloquee por fallos externos (eventual consistency).
+- **Idioma de la UI**: La interfaz de usuario esta 100% en espanol con locale `es-AR` configurado en el tag `<html lang="es-AR">`. Las fechas usan `Intl.DateTimeFormat` con formato DD/MM/YYYY. El código (variables, funciones, enums de Prisma, rutas de API, logs de consola) se mantiene en inglés por estándares de ingeniería. Las traducciones de enums estan centralizadas en `src/lib/translations.ts`.
+- **Datos de prueba**: El seed (`prisma/seed.ts`) genera 15 envíos distribuidos equitativamente entre los estados PENDING (4), ASSIGNED (4), IN_TRANSIT (4) y DELIVERED (3). Cada envío tiene su `transaction_id` y una línea de tiempo de `TrackingEvent` coherente con la narrativa del Diario de tránsito. El seed detecta automaticamente si hay usuarios reales creados por lazy sync para vincular los envíos a las cuentas de Clerk de prueba. Para el testeo del flujo de onboarding se incluyen dos usuarios sin rol (`freeship1+clerktest@iaw.com` y `freeship2+clerktest@iaw.com`) con verificación de email desactivada para agilizar el acceso.
