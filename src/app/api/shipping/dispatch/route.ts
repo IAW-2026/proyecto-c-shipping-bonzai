@@ -57,6 +57,25 @@ export async function POST(request: Request) {
         )
       }
 
+      try {
+        const sellerUrl = `${process.env.SELLER_SERVICE_URL}/api/orders/${orderRef}/tracking`
+        const sellerRes = await fetch(sellerUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-service-key': process.env.SELLER_SERVICE_KEY || '',
+          },
+          body: JSON.stringify({ trackingId: existing.tracking_id }),
+        })
+        if (!sellerRes.ok) {
+          console.error(`Seller notification failed: ${sellerRes.status} ${sellerRes.statusText}`)
+        } else {
+          console.log(`Seller notification success: ${sellerRes.status}`)
+        }
+      } catch (error) {
+        console.error('Seller notification error:', error)
+      }
+
       return NextResponse.json(
         { trackingId: existing.tracking_id, status: 'ALREADY_EXISTS' },
         { status: 200 }
