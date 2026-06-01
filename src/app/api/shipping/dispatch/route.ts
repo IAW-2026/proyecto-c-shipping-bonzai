@@ -111,7 +111,7 @@ export async function POST(request: Request) {
 
     try {
       const sellerUrl = `${process.env.SELLER_SERVICE_URL}/api/orders/${orderRef}/tracking`
-      await fetch(sellerUrl, {
+      const sellerRes = await fetch(sellerUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,6 +119,11 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify({ trackingId: shipment.tracking_id }),
       })
+      if (!sellerRes.ok) {
+        console.error(`Seller notification failed: ${sellerRes.status} ${sellerRes.statusText}`)
+      } else {
+        console.log(`Seller notification success: ${sellerRes.status}`)
+      }
     } catch (error) {
       console.error('Seller notification error:', error)
     }
