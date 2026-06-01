@@ -155,7 +155,7 @@ export function DispatchTestForm() {
           <div>
             <h2 className="font-display text-xl text-primary">Nuevo Envío</h2>
             <p className="font-sans text-xs text-secondary">
-              Seller ID: {user.id}
+              ID del Vendedor: {user.id}
             </p>
           </div>
         </div>
@@ -164,7 +164,7 @@ export function DispatchTestForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block font-sans text-xs text-secondary uppercase tracking-wider mb-1.5">
-                Order Reference
+                Referencia de Pedido
               </label>
               <input
                 type="text"
@@ -177,7 +177,7 @@ export function DispatchTestForm() {
 
             <div>
               <label className="block font-sans text-xs text-secondary uppercase tracking-wider mb-1.5">
-                Transaction ID
+                ID de Transacción
               </label>
               <input
                 type="text"
@@ -192,7 +192,7 @@ export function DispatchTestForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block font-sans text-xs text-secondary uppercase tracking-wider mb-1.5">
-                Buyer ID
+                ID del Comprador
               </label>
               <input
                 type="text"
@@ -206,7 +206,7 @@ export function DispatchTestForm() {
 
           <div>
             <label className="block font-sans text-xs text-secondary uppercase tracking-wider mb-1.5">
-              Delivery Address
+              Dirección de Entrega
             </label>
             <input
               type="text"
@@ -257,7 +257,7 @@ export function DispatchTestForm() {
               onClick={handleReset}
               className="h-11 px-4 border border-outline-ghost hover:bg-surface-low text-primary rounded-xl font-sans text-sm transition-colors"
             >
-              Reset
+              Restablecer
             </button>
             <button
               type="button"
@@ -282,10 +282,10 @@ export function DispatchTestForm() {
             )}
             <div>
               <p className="font-sans text-sm font-medium">
-                Status: {result.status || 'Network Error'}
+                Estado: {result.status || 'Error de Red'}
               </p>
               <p className="font-sans text-xs opacity-70">
-                {result.type === 'success' ? 'Request successful' : 'Request failed'}
+                {result.type === 'success' ? 'Solicitud exitosa' : 'Solicitud fallida'}
               </p>
             </div>
           </div>

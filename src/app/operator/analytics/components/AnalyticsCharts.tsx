@@ -57,7 +57,7 @@ export function AnalyticsCharts({
   return (
     <div className="space-y-8">
       <div className={chartCard}>
-        <h3 className="font-display text-xl text-primary mb-6">Shipments by Status</h3>
+          <h3 className="font-display text-xl text-primary mb-6">Envíos por Estado</h3>
         {empty ? (
           <EmptyChart />
         ) : (
@@ -79,7 +79,7 @@ export function AnalyticsCharts({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className={chartCard}>
-          <h3 className="font-display text-xl text-primary mb-6">By Shipment Type</h3>
+          <h3 className="font-display text-xl text-primary mb-6">Por Tipo de Envío</h3>
           {empty ? (
             <EmptyChart />
           ) : (
@@ -117,7 +117,7 @@ export function AnalyticsCharts({
         </div>
 
         <div className={chartCard}>
-          <h3 className="font-display text-xl text-primary mb-6">Top Drivers</h3>
+          <h3 className="font-display text-xl text-primary mb-6">Mejores Repartidores</h3>
           {topDrivers.length === 0 ? (
             <EmptyChart />
           ) : (
@@ -151,7 +151,7 @@ export function AnalyticsCharts({
 function EmptyChart() {
   return (
     <div className="flex items-center justify-center h-[300px]">
-      <p className="font-sans text-sm text-secondary">No data available yet.</p>
+      <p className="font-sans text-sm text-secondary">Aún no hay datos disponibles.</p>
     </div>
   )
 }

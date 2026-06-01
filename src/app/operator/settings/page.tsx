@@ -3,6 +3,8 @@ import { getLocalProfile, isAdmin } from '@/lib/auth-helpers'
 import { auth } from '@clerk/nextjs/server'
 import { User, Shield, Wifi, WifiOff } from 'lucide-react'
 
+import { OPERATOR_STATUS_LABELS } from '@/lib/translations'
+
 export default async function SettingsPage() {
   const profile = await getLocalProfile()
   const admin = await isAdmin()
@@ -18,13 +20,13 @@ export default async function SettingsPage() {
     <main className="p-12 pb-32">
       <header className="mb-12">
         <span className="font-sans text-[11px] uppercase tracking-widest text-secondary">
-          Settings
+          Configuración
         </span>
         <h1 className="font-display text-5xl md:text-6xl mt-2 text-primary">
-          Settings & Profile
+          Configuración y Perfil
         </h1>
         <p className="font-sans text-sm text-secondary mt-3">
-          Operator account and system configuration.
+          Cuenta del operador y configuración del sistema.
         </p>
       </header>
 
@@ -35,8 +37,8 @@ export default async function SettingsPage() {
               <User size={18} className="text-primary" strokeWidth={1.5} />
             </div>
             <div>
-              <h3 className="font-display text-xl text-primary">Operator Profile</h3>
-              <p className="font-sans text-xs text-secondary">Your account details</p>
+              <h3 className="font-display text-xl text-primary">Perfil del Operador</h3>
+              <p className="font-sans text-xs text-secondary">Detalles de tu cuenta</p>
             </div>
           </div>
 
@@ -48,13 +50,13 @@ export default async function SettingsPage() {
             {profile?.profile && (
               <>
                 <div className="flex justify-between items-center py-2">
-                  <span className="font-sans text-sm text-secondary">Role</span>
+                  <span className="font-sans text-sm text-secondary">Rol</span>
                   <span className="font-sans text-sm text-primary">
-                    {admin ? 'Administrator' : 'Operator'}
+                    {admin ? 'Administrador' : 'Operador'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
-                  <span className="font-sans text-sm text-secondary">Status</span>
+                  <span className="font-sans text-sm text-secondary">Estado</span>
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium font-sans ${
                       profile.profile.status === 'ACTIVE'
@@ -62,7 +64,7 @@ export default async function SettingsPage() {
                         : 'bg-red-50 text-red-700'
                     }`}
                   >
-                    {profile.profile.status}
+                    {OPERATOR_STATUS_LABELS[profile.profile.status] || profile.profile.status}
                   </span>
                 </div>
               </>
@@ -76,37 +78,37 @@ export default async function SettingsPage() {
               <Shield size={18} className="text-primary" strokeWidth={1.5} />
             </div>
             <div>
-              <h3 className="font-display text-xl text-primary">External Connections</h3>
-              <p className="font-sans text-xs text-secondary">Service-to-service integrations</p>
+              <h3 className="font-display text-xl text-primary">Conexiones Externas</h3>
+              <p className="font-sans text-xs text-secondary">Integraciones entre servicios</p>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-center py-2">
-              <span className="font-sans text-sm text-secondary">Seller App</span>
+              <span className="font-sans text-sm text-secondary">App de Vendedor</span>
               {sellerConfigured ? (
                 <span className="flex items-center gap-2 text-emerald-700">
                   <Wifi size={14} strokeWidth={1.5} />
-                  <span className="font-sans text-xs font-medium">Connected</span>
+                  <span className="font-sans text-xs font-medium">Conectado</span>
                 </span>
               ) : (
                 <span className="flex items-center gap-2 text-red-600">
                   <WifiOff size={14} strokeWidth={1.5} />
-                  <span className="font-sans text-xs font-medium">Not configured</span>
+                  <span className="font-sans text-xs font-medium">No configurado</span>
                 </span>
               )}
             </div>
             <div className="flex justify-between items-center py-2">
-              <span className="font-sans text-sm text-secondary">Payments App</span>
+              <span className="font-sans text-sm text-secondary">App de Pagos</span>
               {paymentsConfigured ? (
                 <span className="flex items-center gap-2 text-emerald-700">
                   <Wifi size={14} strokeWidth={1.5} />
-                  <span className="font-sans text-xs font-medium">Connected</span>
+                  <span className="font-sans text-xs font-medium">Conectado</span>
                 </span>
               ) : (
                 <span className="flex items-center gap-2 text-red-600">
                   <WifiOff size={14} strokeWidth={1.5} />
-                  <span className="font-sans text-xs font-medium">Not configured</span>
+                  <span className="font-sans text-xs font-medium">No configurado</span>
                 </span>
               )}
             </div>
@@ -114,9 +116,9 @@ export default async function SettingsPage() {
         </div>
 
         <div className="bg-surface-high rounded-xl border border-outline-ghost p-6">
-          <h3 className="font-display text-xl text-primary mb-1">Account</h3>
+          <h3 className="font-display text-xl text-primary mb-1">Cuenta</h3>
           <p className="font-sans text-xs text-secondary mb-4">
-            Manage your password and email via Clerk.
+            Gestiona tu contrasena y correo a traves de Clerk.
           </p>
           <a
             href={`https://dashboard.clerk.com`}
@@ -124,7 +126,7 @@ export default async function SettingsPage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-xs uppercase tracking-[0.1em] font-sans font-medium hover:bg-primary/90 transition-all"
           >
-            Open Clerk Dashboard
+            Abrir Panel de Clerk
           </a>
         </div>
       </div>

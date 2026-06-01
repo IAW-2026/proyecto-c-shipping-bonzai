@@ -2,19 +2,8 @@
 
 import { useState } from 'react'
 import { toggleDriverStatus, toggleOperatorStatus } from '../actions'
+import { DRIVER_STATUS_LABELS, OPERATOR_STATUS_LABELS } from '@/lib/translations'
 import { User, Pause, Play } from 'lucide-react'
-
-const driverStatusConfig: Record<string, { label: string; className: string }> = {
-  AVAILABLE: { label: 'Available', className: 'bg-emerald-50 text-emerald-700' },
-  ASSIGNED: { label: 'Assigned', className: 'bg-violet-50 text-violet-700' },
-  SUSPENDED: { label: 'Suspended', className: 'bg-red-50 text-red-700' },
-  INACTIVE: { label: 'Inactive', className: 'bg-gray-100 text-gray-600' },
-}
-
-const operatorStatusConfig: Record<string, { label: string; className: string }> = {
-  ACTIVE: { label: 'Active', className: 'bg-emerald-50 text-emerald-700' },
-  INACTIVE: { label: 'Inactive', className: 'bg-gray-100 text-gray-600' },
-}
 
 export function UserCard({
   type,
@@ -32,8 +21,8 @@ export function UserCard({
   const [loading, setLoading] = useState(false)
   const isDriver = type === 'driver'
   const config = isDriver
-    ? (driverStatusConfig[status] || driverStatusConfig.INACTIVE)
-    : (operatorStatusConfig[status] || operatorStatusConfig.INACTIVE)
+    ? { label: DRIVER_STATUS_LABELS[status] || status, className: status === 'SUSPENDED' ? 'bg-red-50 text-red-700' : status === 'AVAILABLE' ? 'bg-emerald-50 text-emerald-700' : status === 'ASSIGNED' ? 'bg-violet-50 text-violet-700' : 'bg-gray-100 text-gray-600' }
+    : { label: OPERATOR_STATUS_LABELS[status] || status, className: status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-600' }
 
   const handleToggle = async () => {
     setLoading(true)
@@ -61,7 +50,7 @@ export function UserCard({
                 {clerkUserId}
               </h3>
               <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary">
-                {isDriver ? 'Jardinero' : 'Operador'}
+                {isDriver ? 'Repartidor' : 'Operador'}
               </p>
             </div>
           </div>
@@ -87,12 +76,12 @@ export function UserCard({
               {isBlocked ? (
                 <>
                   <Play size={14} strokeWidth={1.5} />
-                  <span className="hidden sm:inline">Activate</span>
+                  <span className="hidden sm:inline">Activar</span>
                 </>
               ) : (
                 <>
                   <Pause size={14} strokeWidth={1.5} />
-                  <span className="hidden sm:inline">Suspend</span>
+                  <span className="hidden sm:inline">Suspender</span>
                 </>
               )}
             </button>

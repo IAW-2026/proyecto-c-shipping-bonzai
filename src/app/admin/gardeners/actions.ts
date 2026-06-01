@@ -12,7 +12,7 @@ export async function toggleDriverStatus(driverId: string) {
     where: { id: driverId },
     data: { status: newStatus },
   })
-  revalidatePath('/admin/jardineros')
+  revalidatePath('/admin/gardeners')
   return { success: true }
 }
 
@@ -25,6 +25,6 @@ export async function toggleOperatorStatus(operatorId: string) {
     where: { id: operatorId },
     data: { status: newStatus },
   })
-  revalidatePath('/admin/jardineros')
+  revalidatePath('/admin/gardeners')
   return { success: true }
 }

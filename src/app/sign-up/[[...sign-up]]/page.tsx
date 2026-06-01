@@ -9,7 +9,7 @@ export default function SignUpPage() {
             The Living Archive
           </h1>
           <p className="font-sans text-sm text-secondary">
-            Bonzai Shipping Portal
+            Portal de Envíos Bonzai
           </p>
         </div>
         <SignUp

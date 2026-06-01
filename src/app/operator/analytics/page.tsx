@@ -32,7 +32,7 @@ export default async function AnalyticsPage() {
   const topDrivers = topDriversData
     .filter((d) => d.driver_id)
     .map((d) => ({
-      name: driverMap.get(d.driver_id!) || 'Unknown',
+      name: driverMap.get(d.driver_id!) || 'Desconocido',
       count: d._count,
     }))
     .sort((a, b) => b.count - a.count)
@@ -55,32 +55,32 @@ export default async function AnalyticsPage() {
     <main className="p-12 pb-32">
       <header className="mb-12">
         <span className="font-sans text-[11px] uppercase tracking-widest text-secondary">
-          Analytics
+          Analíticas
         </span>
         <h1 className="font-display text-5xl md:text-6xl mt-2 text-primary">
-          Shipping Analytics
+          Analíticas de Envíos
         </h1>
         <p className="font-sans text-sm text-secondary mt-3">
-          Performance metrics and shipment insights.
+          Métricas de rendimiento e información de envíos.
         </p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-surface-high rounded-xl border border-outline-ghost p-6">
           <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
-            Total Shipments
+            Total de Envíos
           </p>
           <p className="font-display text-4xl text-primary">{total}</p>
         </div>
         <div className="bg-surface-high rounded-xl border border-outline-ghost p-6">
           <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
-            Delivered
+            Entregados
           </p>
           <p className="font-display text-4xl text-primary">{delivered}</p>
         </div>
         <div className="bg-surface-high rounded-xl border border-outline-ghost p-6">
           <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-secondary mb-1">
-            Success Rate
+            Tasa de Éxito
           </p>
           <p className="font-display text-4xl text-primary">
             {total > 0 ? Math.round((delivered / total) * 100) : 0}%

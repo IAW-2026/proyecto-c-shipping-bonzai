@@ -1,5 +1,6 @@
 import { TrackingEvent } from '@prisma/client'
 import { Package, Truck, CheckCircle } from 'lucide-react'
+import { TRACKING_STATUS_LABELS } from '@/lib/translations'
 
 const eventIcons: Record<string, React.ReactNode> = {
   'RECIBIDO_EN_ORIGEN': <Package size={14} strokeWidth={1.5} />,
@@ -29,7 +30,7 @@ export function Timeline({ events }: { events: TrackingEvent[] }) {
             </div>
             <div className={`pb-6 flex-1 ${index % 2 === 0 ? 'bg-surface-low/50' : ''} rounded-lg px-3 py-2`}>
               <p className="font-display text-base text-primary">
-                {event.status}
+                {TRACKING_STATUS_LABELS[event.status] || event.status}
               </p>
               <p className="font-sans text-[11px] text-secondary mt-1">
                 {new Date(event.timestamp).toLocaleDateString('es-ES', {

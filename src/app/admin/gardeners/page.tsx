@@ -25,13 +25,13 @@ export default async function JardinerosPage() {
           Jardineros
         </h1>
         <p className="font-sans text-sm text-secondary mt-3">
-          Gardeners and operators entrusted with the living archive.
+          Repartidores y operadores encargados del archivo vivo.
         </p>
       </header>
 
-      <Section icon={Sprout} title="Jardineros" subtitle="Active and suspended drivers">
+      <Section icon={Sprout} title="Repartidores" subtitle="Repartidores activos y suspendidos">
         {drivers.length === 0 ? (
-          <EmptyMessage message="No drivers registered yet." />
+          <EmptyMessage message="Aun no hay repartidores registrados." />
         ) : (
           <div className="space-y-4">
             {drivers.map((d) => (
@@ -47,9 +47,9 @@ export default async function JardinerosPage() {
         )}
       </Section>
 
-      <Section icon={Users} title="Operadores" subtitle="Logistic operators">
+      <Section icon={Users} title="Operadores" subtitle="Operadores logísticos">
         {operators.length === 0 ? (
-          <EmptyMessage message="No operators registered yet." />
+          <EmptyMessage message="Aun no hay operadores registrados." />
         ) : (
           <div className="space-y-4">
             {operators.map((o) => (

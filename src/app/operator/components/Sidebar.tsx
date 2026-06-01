@@ -6,9 +6,9 @@ import { LayoutDashboard, BarChart3, Settings, Shield } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
 
 const navItems = [
-  { href: '/operator/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/operator/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/operator/settings', label: 'Settings', icon: Settings },
+  { href: '/operator/dashboard', label: 'Panel', icon: LayoutDashboard },
+  { href: '/operator/analytics', label: 'Analíticas', icon: BarChart3 },
+  { href: '/operator/settings', label: 'Configuración', icon: Settings },
 ]
 
 export function Sidebar() {
@@ -24,7 +24,7 @@ export function Sidebar() {
           The Living Archive
         </h1>
         <p className="text-[10px] uppercase tracking-[0.2em] text-secondary mt-1">
-          Bonzai Shipping Portal
+          Portal de Envíos Bonzai
         </p>
       </div>
 

@@ -67,17 +67,17 @@ export default async function DashboardPage({
       <header className="flex justify-between items-center mb-12">
         <div>
           <span className="font-sans text-[11px] uppercase tracking-widest text-secondary">
-            Logistics & Logistics Management
+            Gestion Logística
           </span>
           <h1 className="font-display text-5xl md:text-6xl mt-2 !text-[#03271a]">
-            Shipping Overview
+            Resumen de Envíos
           </h1>
         </div>
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3 bg-surface-high border border-outline-ghost px-4 py-2 rounded-full shadow-sm">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
             <span className="text-xs font-semibold tracking-wide uppercase text-primary">
-              Bonzai Status: Active
+              Bonzai Status: Activo
             </span>
           </div>
         </div>
@@ -100,7 +100,7 @@ export default async function DashboardPage({
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-12 pt-8">
           <p className="font-sans text-xs text-secondary">
-            Page {page} of {totalPages}
+            Página {page} de {totalPages}
           </p>
           <div className="flex items-center gap-2">
             <a
