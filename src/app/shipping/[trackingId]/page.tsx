@@ -78,7 +78,7 @@ export default async function ShippingDetailPage({
   const isBuyer = shipment.buyer_id === userId
 
   return (
-    <main className="min-h-screen p-12 pb-32">
+    <main className="min-h-screen p-6 lg:p-12 pb-20 lg:pb-32">
       <header className="mb-12">
         <a
           href="/shipping"

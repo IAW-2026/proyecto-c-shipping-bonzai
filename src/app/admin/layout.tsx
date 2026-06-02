@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { isAdmin } from '@/lib/auth-helpers'
 import { AdminSidebar } from './components/AdminSidebar'
-import { Footer } from '@/app/operator/components/Footer'
+import { ResponsiveLayout } from '@/components/ResponsiveLayout'
 
 export default async function AdminLayout({
   children,
@@ -14,12 +14,8 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <AdminSidebar />
-      <div className="flex-1 ml-64">
-        {children}
-        <Footer />
-      </div>
-    </div>
+    <ResponsiveLayout title="Curador Principal" sidebar={AdminSidebar}>
+      {children}
+    </ResponsiveLayout>
   )
 }

@@ -11,11 +11,15 @@ const navItems = [
   { href: '/driver', label: 'Vista del Repartidor', icon: Truck },
 ]
 
-export function AdminSidebar() {
+export function AdminSidebar({ mobile, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname()
 
+  const handleClick = () => {
+    if (mobile && onNavigate) onNavigate()
+  }
+
   return (
-    <aside className="w-64 border-r border-outline-ghost flex flex-col fixed h-full bg-surface-high z-20 dark:bg-dark-bg dark:border-slate-800">
+    <aside className={`w-64 border-r border-outline-ghost flex flex-col h-full bg-surface-high z-20 dark:bg-dark-bg dark:border-slate-800 ${mobile ? '' : 'fixed'}`}>
       <div className="p-8">
         <h1 className="font-display text-2xl font-bold italic tracking-tight text-primary dark:text-surface-high">
           The Living Archive
@@ -33,6 +37,7 @@ export function AdminSidebar() {
             <Link
               key={item.label}
               href={item.href}
+              onClick={handleClick}
               className={`flex items-center gap-3 px-4 py-3 transition-all group rounded-lg ${
                 isActive
                   ? 'bg-primary text-white shadow-sm'
