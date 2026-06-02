@@ -8,17 +8,17 @@ https://proyecto-c-shipping-bonzai.vercel.app
 
 | Rol | Email | Contraseña |
 |---|---|---|
-| Operador | operator+clerktest@iaw.com | iawuser# |
-| Repartidor (Driver) | driver+clerktest@iaw.com | iawuser# |
-| Admin | admin+clerktest@iaw.com | iawuser# |
-| Sin rol (onboarding) | freeship1+clerktest@iaw.com | iawuser# |
-| Sin rol (onboarding) | freeship2+clerktest@iaw.com | iawuser# |
+| Operador | operator+clerk_test@iaw.com | iawuser# |
+| Repartidor (Driver) | driver+clerk_test@iaw.com | iawuser# |
+| Admin | admin+clerk_test@iaw.com | iawuser# |
+| Sin rol (onboarding) | freeship1+clerk_test@iaw.com | iawuser# |
+| Sin rol (onboarding) | freeship2+clerk_test@iaw.com | iawuser# |
 
-## Instrucciones de Evaluacion
+## Instrucciones de Evaluación
 
 ### 1. Operador asigna un ejemplar a un repartidor
 
-1. Inicia sesión con **operator+clerktest@iaw.com** en la pagina de sign-in.
+1. Inicia sesión con **operator+clerk_test@iaw.com** en la pagina de sign-in.
 2. Navega a **Panel > Resumen de envíos** (sidebar izquierdo).
 3. Busca un envío en estado **"Pendiente"** usando los filtros.
 4. Haz clic en la tarjeta del envío para abrir el drawer lateral.
@@ -28,7 +28,7 @@ https://proyecto-c-shipping-bonzai.vercel.app
 
 ### 2. Repartidor confirma retiro y entrega
 
-1. Cierra sesión e inicia sesión con **driver+clerktest@iaw.com**.
+1. Cierra sesión e inicia sesión con **driver+clerk_test@iaw.com**.
 2. Navega a la vista del repartidor (la landing page redirige automaticamente).
 3. Veras los envíos asignados en estado **"Asignado"** en el panel izquierdo.
 4. Selecciona un envío y haz clic en **"Marcar como retirado"**. El estado cambia de ASSIGNED a IN_TRANSIT. Aparece un nuevo evento en el Diario de tránsito.
@@ -42,7 +42,7 @@ https://proyecto-c-shipping-bonzai.vercel.app
 
 ### 4. Admin asigna roles a nuevos usuarios (onboarding)
 
-1. Inicia sesion con **admin+clerktest@iaw.com**.
+1. Inicia sesion con **admin+clerk_test@iaw.com**.
 2. Navega a **Nuevos Especimenes** en el sidebar.
 3. Veras una lista de usuarios de Clerk sin rol asignado (freeship1 y freeship2).
 4. Para cada uno, asigna un rol (`operator_shipping`, `driver_shipping`) y haz clic en **Aprobar**.
@@ -50,7 +50,7 @@ https://proyecto-c-shipping-bonzai.vercel.app
 
 ### 5. Admin supervisa
 
-1. Inicia sesión con **admin+clerktest@iaw.com**.
+1. Inicia sesión con **admin+clerk_test@iaw.com**.
 2. Desde el sidebar accede a:
    - **Nuevos Especimenes**: onboarding de usuarios con roles pendientes.
    - **Jardineros**: gestion de repartidores y operadores (suspender/reactivar).
@@ -72,4 +72,4 @@ Tecnicamente es una aplicación Next.js 16 con App Router, Prisma sobre PostgreS
 - **Sistema de diseño**: Paleta de colores Bone (#faf9f4) como fondo, Deep Evergreen (#03271a) como color primario de marca, y Moss (#526347) para textos secundarios. Tipografia: Newsreader (serif) para títulos y Manrope (sans) para cuerpo. Sin bordes de 1px — se utilizan sombras suaves y fondos contrastantes para delimitar elementos. Se implementó una estética de "bitácora botánica curada".
 - **Integración M2M real**: El endpoint `POST /api/shipping/dispatch` notifica automaticamente a la Seller App enviando el `trackingId` a `{SELLER_SERVICE_URL}/api/orders/{orderRef}/tracking`. Al confirmar entrega, la Server Action `confirmDelivery` envia una notificación a `{PAYMENTS_API_URL}/api/payments/{transaction_id}/delivered` con el header `X-API-Key`. Ambas llamadas usan `try/catch` independiente de la transacción local de Prisma para garantizar que el flujo principal nunca se bloquee por fallos externos (eventual consistency).
 - **Idioma de la UI**: La interfaz de usuario esta 100% en espanol con locale `es-AR` configurado en el tag `<html lang="es-AR">`. Las fechas usan `Intl.DateTimeFormat` con formato DD/MM/YYYY. El código (variables, funciones, enums de Prisma, rutas de API, logs de consola) se mantiene en inglés por estándares de ingeniería. Las traducciones de enums estan centralizadas en `src/lib/translations.ts`.
-- **Datos de prueba**: El seed (`prisma/seed.ts`) genera 15 envíos distribuidos equitativamente entre los estados PENDING (4), ASSIGNED (4), IN_TRANSIT (4) y DELIVERED (3). Cada envío tiene su `transaction_id` y una línea de tiempo de `TrackingEvent` coherente con la narrativa del Diario de tránsito. El seed detecta automaticamente si hay usuarios reales creados por lazy sync para vincular los envíos a las cuentas de Clerk de prueba. Para el testeo del flujo de onboarding se incluyen dos usuarios sin rol (`freeship1+clerktest@iaw.com` y `freeship2+clerktest@iaw.com`) con verificación de email desactivada para agilizar el acceso.
+- **Datos de prueba**: El seed (`prisma/seed.ts`) genera 15 envíos distribuidos equitativamente entre los estados PENDING (4), ASSIGNED (4), IN_TRANSIT (4) y DELIVERED (3). Cada envío tiene su `transaction_id` y una línea de tiempo de `TrackingEvent` coherente con la narrativa del Diario de tránsito. El seed detecta automaticamente si hay usuarios reales creados por lazy sync para vincular los envíos a las cuentas de Clerk de prueba. Para el testeo del flujo de onboarding se incluyen dos usuarios sin rol (`freeship1+clerk_test@iaw.com` y `freeship2+clerk_test@iaw.com`) con verificación de email desactivada para agilizar el acceso.
