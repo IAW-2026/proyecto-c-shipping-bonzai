@@ -132,7 +132,7 @@ export async function confirmDelivery(shipmentId: string) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-Key': process.env.PAYMENTS_API_KEY || '',
+          'x-shipping-key': process.env.PAYMENTS_API_KEY || '',
         },
       })
 
