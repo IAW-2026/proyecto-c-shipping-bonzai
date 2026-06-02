@@ -2,7 +2,7 @@ import { DispatchTestForm } from './components/DispatchTestForm'
 
 export default function TestDispatchPage() {
   return (
-    <main className="min-h-screen bg-background p-12 pb-32">
+    <main className="min-h-screen bg-background p-6 lg:p-12 pb-20 lg:pb-32">
       <header className="mb-12">
         <span className="font-sans text-[11px] uppercase tracking-widest text-secondary">
           Pruebas de API

@@ -1,5 +1,5 @@
 import { Sidebar } from './components/Sidebar'
-import { Footer } from './components/Footer'
+import { ResponsiveLayout } from '@/components/ResponsiveLayout'
 
 export default function OperatorLayout({
   children,
@@ -7,12 +7,8 @@ export default function OperatorLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-background flex">
-      <Sidebar />
-      <div className="flex-1 ml-64">
-        {children}
-        <Footer />
-      </div>
-    </div>
+    <ResponsiveLayout title="Portal de Envíos Bonzai" sidebar={Sidebar}>
+      {children}
+    </ResponsiveLayout>
   )
 }

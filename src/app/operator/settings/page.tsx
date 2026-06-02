@@ -17,7 +17,7 @@ export default async function SettingsPage() {
   const paymentsConfigured = !!process.env.PAYMENTS_API_URL
 
   return (
-    <main className="p-12 pb-32">
+    <main className="p-6 lg:p-12 pb-20 lg:pb-32">
       <header className="mb-12">
         <span className="font-sans text-[11px] uppercase tracking-widest text-secondary">
           Configuración

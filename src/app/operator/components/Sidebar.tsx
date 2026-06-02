@@ -11,14 +11,18 @@ const navItems = [
   { href: '/operator/settings', label: 'Configuración', icon: Settings },
 ]
 
-export function Sidebar() {
+export function Sidebar({ mobile, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname()
   const { user } = useUser()
   const roles = (user?.publicMetadata?.roles as string[]) || []
   const isAdmin = roles.includes('shipping_admin')
 
+  const handleClick = () => {
+    if (mobile && onNavigate) onNavigate()
+  }
+
   return (
-    <aside className="w-64 border-r border-outline-ghost flex flex-col fixed h-full bg-surface-high z-20 dark:bg-dark-bg dark:border-slate-800">
+    <aside className={`w-64 border-r border-outline-ghost flex flex-col h-full bg-surface-high z-20 dark:bg-dark-bg dark:border-slate-800 ${mobile ? '' : 'fixed'}`}>
       <div className="p-8">
         <h1 className="font-display text-2xl font-bold italic tracking-tight text-primary dark:text-surface-high">
           The Living Archive
@@ -36,6 +40,7 @@ export function Sidebar() {
             <Link
               key={item.label}
               href={item.href}
+              onClick={handleClick}
               className={`flex items-center gap-3 px-4 py-3 transition-all group rounded-lg ${
                 isActive
                   ? 'bg-primary text-white shadow-sm'
@@ -54,6 +59,7 @@ export function Sidebar() {
           <div className="pt-4 mt-4 border-t border-outline-ghost dark:border-slate-800">
             <Link
               href="/admin/onboarding"
+              onClick={handleClick}
               className="flex items-center gap-3 px-4 py-3 transition-all group rounded-lg text-secondary hover:text-primary"
             >
               <Shield size={18} strokeWidth={1.5} />

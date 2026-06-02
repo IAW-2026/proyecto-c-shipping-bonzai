@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-background p-12 pb-32">
+    <div className="min-h-screen bg-background p-6 lg:p-12 pb-20 lg:pb-32">
       <div className="max-w-6xl mx-auto">
         <header className="flex justify-between items-center mb-12">
           <div>
