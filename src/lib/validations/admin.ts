@@ -9,6 +9,13 @@ export const adminShipmentsQuerySchema = z.object({
   seller_id: z.string().regex(clerkIdRegex).optional(),
 })
 
+export const adminPaginationSchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+})
+
 export const adminUpdateUserStatusSchema = z.object({
   status: z.enum(['ACTIVE', 'INACTIVE', 'SUSPENDED', 'AVAILABLE']),
 })
+
+export const uuidParamSchema = z.string().uuid()
