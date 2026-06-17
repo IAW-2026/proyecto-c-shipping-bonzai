@@ -40,3 +40,8 @@ export async function verifyRequestAuth(request: Request) {
     return { userId: null, roles: [] }
   }
 }
+
+export function verifyShippingServiceKey(request: Request): boolean {
+  const key = request.headers.get('x-shipping-service-key') ?? ''
+  return key === process.env.SHIPPING_SERVICE_KEY
+}
