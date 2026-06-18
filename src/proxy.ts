@@ -12,6 +12,8 @@ const isPublicRoute = createRouteMatcher([
   '/api/shipping/dispatch',
   '/api/shipping/(.*)',
   '/api/admin/(.*)',
+  '/api/analytics/(.*)',
+  '/api/health',
   '/test-dispatch',
   '/shipping(.*)',
 ])
