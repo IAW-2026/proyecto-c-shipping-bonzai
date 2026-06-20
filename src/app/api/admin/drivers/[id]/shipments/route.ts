@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyShippingServiceKey } from '@/lib/auth-verify'
+import { checkRateLimit } from '@/lib/rate-limiter'
 import { adminPaginationSchema, uuidParamSchema } from '@/lib/validations/admin'
 import type { PaginatedResponse } from '@/lib/types/api'
 
@@ -12,6 +13,10 @@ export async function GET(
 ) {
   if (!verifyShippingServiceKey(request)) {
     return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
+  }
+
+  if (!checkRateLimit(request)) {
+    return NextResponse.json({ error: 'TOO_MANY_REQUESTS' }, { status: 429 })
   }
 
   const { id } = await params
