@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyShippingServiceKey } from '@/lib/auth-verify'
+import { checkRateLimit } from '@/lib/rate-limiter'
 import { adminShipmentsQuerySchema } from '@/lib/validations/admin'
 import type { PaginatedResponse } from '@/lib/types/api'
 
@@ -11,16 +12,34 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
   }
 
+  if (!checkRateLimit(request)) {
+    return NextResponse.json({ error: 'TOO_MANY_REQUESTS' }, { status: 429 })
+  }
+
   const url = new URL(request.url)
   const parsed = adminShipmentsQuerySchema.safeParse(Object.fromEntries(url.searchParams))
   if (!parsed.success) {
     return NextResponse.json({ error: 'INVALID_PARAMS', details: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { page, limit, seller_id } = parsed.data
+  const { page, limit, seller_id, q } = parsed.data
 
   const where: Record<string, unknown> = { status: 'CANCELLED' }
   if (seller_id) where.seller_id = seller_id
+
+  if (q && q.length < 3) {
+    return NextResponse.json({
+      data: [],
+      meta: { total_records: 0, current_page: page, total_pages: 0, limit },
+    })
+  }
+
+  if (q && q.length >= 3) {
+    where.OR = [
+      { tracking_id: { contains: q, mode: 'insensitive' } },
+      { delivery_address: { contains: q, mode: 'insensitive' } },
+    ]
+  }
 
   const [shipments, total] = await Promise.all([
     prisma.shipment.findMany({
