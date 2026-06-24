@@ -127,7 +127,7 @@ export async function confirmDelivery(shipmentId: string) {
     ])
 
     try {
-      const paymentsUrl = `${process.env.PAYMENTS_API_URL}/api/payments/${shipment.transaction_id}/delivered`
+      const paymentsUrl = `${process.env.PAYMENTS_API_URL}/api/payments/${shipment.order_id}/delivered`
       const response = await fetch(paymentsUrl, {
         method: 'POST',
         headers: {
