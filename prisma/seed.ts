@@ -13,8 +13,55 @@ const KNOWN_SEED_DRIVER_IDS = [
   'user_2drvInact003',
 ]
 
-function hoursAgo(h: number): Date {
-  return new Date(Date.now() - h * 60 * 60 * 1000)
+function daysAgo(n: number): Date {
+  return new Date(Date.now() - n * 24 * 60 * 60 * 1000)
+}
+
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function pick<T>(arr: readonly T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+function trackingId(index: number): string {
+  return `BOT-${String(index).padStart(8, '0')}`
+}
+
+const ADDRESSES = [
+  'Av. Siempre Viva 123, Ciudad Botanica',
+  'Calle Las Orquideas 456, Sector Norte',
+  'Boulevard Los Robles 789, Distrito Floral',
+  'Pasaje del Sol 101, Zona Centro',
+  'Calle Los Pinos 222, Residencial Bosque',
+  'Avenida Palmas 333, Altos del Valle',
+  'Camino del Vivero 555, La Floresta',
+  'Sendero del Jardin 77, Villa Verde',
+  'Diagonal las Palmeras 111, Barrio del Sol',
+  'Callejon de las Flores 234, Villa Jardin',
+  'Ruta del Botanico 890, El Vergel',
+  'Pasaje del Helecho 456, Ciudad Jardin',
+  'Av. del Curador 100, Centro Botanico',
+  'Calle del Especimen 789, Residencial Flora',
+  'Boulevard de los Viveros 321, Sector Raiz',
+]
+
+const TYPES = ['PLANTA_VIVA', 'INSUMOS', 'FRAGIL', 'SEMILLAS', 'OTROS'] as const
+
+const EVENT_CHAIN: Record<string, string[]> = {
+  PENDING: ['RECIBIDO_EN_ORIGEN'],
+  ASSIGNED: ['RECIBIDO_EN_ORIGEN', 'ASIGNADO_A_REPARTIDOR'],
+  IN_TRANSIT: ['RECIBIDO_EN_ORIGEN', 'ASIGNADO_A_REPARTIDOR', 'EN_TRANSITO'],
+  DELIVERED: ['RECIBIDO_EN_ORIGEN', 'ASIGNADO_A_REPARTIDOR', 'EN_TRANSITO', 'ENTREGADO'],
+  CANCELLED: ['RECIBIDO_EN_ORIGEN', 'CANCELADO'],
+}
+
+interface ShipmentRecord {
+  id: string
+  status: string
+  created_at: Date
+  delivered_at: Date | null
 }
 
 async function main() {
@@ -35,11 +82,11 @@ async function main() {
 
   if (!realOperatorId || !realDriverId) {
     console.log('')
-    console.log('ADVERTENCIA: No se encontraron usuarios reales (creados por lazy sync).')
-    console.log('Para que los envíos del seed se vinculen a tus cuentas de prueba:')
-    console.log('  1. Inicia sesion en la app con operator+clerktest@iaw.com')
-    console.log('  2. Inicia sesion en la app con driver+clerktest@iaw.com')
-    console.log('  3. Vuelve a ejecutar npx prisma db seed')
+    console.log('WARNING: No real users found (created by lazy sync).')
+    console.log('To link seed shipments to your test accounts:')
+    console.log('  1. Sign in to the app with operator+clerktest@iaw.com')
+    console.log('  2. Sign in to the app with driver+clerktest@iaw.com')
+    console.log('  3. Re-run npx prisma db seed')
     console.log('')
   }
 
@@ -69,289 +116,145 @@ async function main() {
     realDriverRecord = existingDriver
   }
 
+  const drivers = [realDriverRecord, driverAssigned]
+  let driverRoundRobin = 0
+  function nextDriver() {
+    const d = drivers[driverRoundRobin % drivers.length]
+    driverRoundRobin++
+    return d
+  }
+
+  const allShipments: ShipmentRecord[] = []
   const now = new Date()
-  const threeDaysAgo = hoursAgo(72)
-  const twoDaysAgo = hoursAgo(48)
-  const oneDayAgo = hoursAgo(24)
-  const sixHoursAgo = hoursAgo(6)
+  let counter = 0
 
-  const pendingShipments = await Promise.all([
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-PEND-001',
-        order_id: 'ORD-BUY-001',
-        transaction_id: 'TXN-BUY-001',
-        buyer_id: 'user_2buyer001',
-        seller_id: 'user_2seller001',
-        status: 'PENDING',
-        delivery_address: 'Av. Siempre Viva 123, Ciudad Botanica',
-        type: 'PLANTA_VIVA',
-        operator_id: operator.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-PEND-002',
-        order_id: 'ORD-BUY-002',
-        transaction_id: 'TXN-BUY-002',
-        buyer_id: 'user_2buyer002',
-        seller_id: 'user_2seller002',
-        status: 'PENDING',
-        delivery_address: 'Calle Las Orquideas 456, Sector Norte',
-        type: 'INSUMOS',
-        operator_id: operator.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-PEND-003',
-        order_id: 'ORD-BUY-003',
-        transaction_id: 'TXN-BUY-003',
-        buyer_id: 'user_2buyer003',
-        seller_id: 'user_2seller003',
-        status: 'PENDING',
-        delivery_address: 'Boulevard Los Robles 789, Distrito Floral',
-        type: 'FRAGIL',
-        operator_id: operator.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-PEND-004',
-        order_id: 'ORD-BUY-004',
-        transaction_id: 'TXN-BUY-004',
-        buyer_id: 'user_2buyer004',
-        seller_id: 'user_2seller004',
-        status: 'PENDING',
-        delivery_address: 'Pasaje del Sol 101, Zona Centro',
-        type: 'SEMILLAS',
-        operator_id: operator.id,
-      },
-    }),
-  ])
-
-  for (const ship of pendingShipments) {
-    await prisma.trackingEvent.create({
-      data: {
-        shipment_id: ship.id,
-        status: 'RECIBIDO_EN_ORIGEN',
-        timestamp: hoursAgo(1),
-      },
-    })
+  function newCounter(): number {
+    counter++
+    return counter
   }
 
-  const assignedShipments = await Promise.all([
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-ASGN-001',
-        order_id: 'ORD-BUY-005',
-        transaction_id: 'TXN-BUY-005',
-        buyer_id: 'user_2buyer005',
-        seller_id: 'user_2seller005',
-        status: 'ASSIGNED',
-        delivery_address: 'Calle Los Pinos 222, Residencial Bosque',
-        type: 'PLANTA_VIVA',
-        operator_id: operator.id,
-        driver_id: realDriverRecord.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-ASGN-002',
-        order_id: 'ORD-BUY-006',
-        transaction_id: 'TXN-BUY-006',
-        buyer_id: 'user_2buyer006',
-        seller_id: 'user_2seller006',
-        status: 'ASSIGNED',
-        delivery_address: 'Avenida Palmas 333, Altos del Valle',
-        type: 'INSUMOS',
-        operator_id: operator.id,
-        driver_id: driverAssigned.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-ASGN-003',
-        order_id: 'ORD-BUY-007',
-        transaction_id: 'TXN-BUY-007',
-        buyer_id: 'user_2buyer007',
-        seller_id: 'user_2seller007',
-        status: 'ASSIGNED',
-        delivery_address: 'Camino del Vivero 555, La Floresta',
-        type: 'FRAGIL',
-        operator_id: operator.id,
-        driver_id: realDriverRecord.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-ASGN-004',
-        order_id: 'ORD-BUY-008',
-        transaction_id: 'TXN-BUY-008',
-        buyer_id: 'user_2buyer008',
-        seller_id: 'user_2seller008',
-        status: 'ASSIGNED',
-        delivery_address: 'Sendero del Jardin 77, Villa Verde',
-        type: 'OTROS',
-        operator_id: operator.id,
-        driver_id: driverAssigned.id,
-      },
-    }),
-  ])
-
-  for (const ship of assignedShipments) {
-    await prisma.trackingEvent.create({
-      data: {
-        shipment_id: ship.id,
-        status: 'RECIBIDO_EN_ORIGEN',
-        timestamp: oneDayAgo,
-      },
-    })
+  function padded(num: number): string {
+    return String(num).padStart(6, '0')
   }
 
-  const inTransitShipments = await Promise.all([
-    prisma.shipment.create({
+  async function createShipment(
+    status: string,
+    createdAt: Date,
+    deliveredAt: Date | null,
+    assignDriver: boolean,
+  ): Promise<ShipmentRecord> {
+    const idx = newCounter()
+    const ship = await prisma.shipment.create({
       data: {
-        tracking_id: 'BOT-TRAN-001',
-        order_id: 'ORD-BUY-009',
-        transaction_id: 'TXN-BUY-009',
-        buyer_id: 'user_2buyer009',
-        seller_id: 'user_2seller009',
-        status: 'IN_TRANSIT',
-        delivery_address: 'Diagonal las Palmeras 111, Barrio del Sol',
-        type: 'PLANTA_VIVA',
+        tracking_id: trackingId(idx),
+        order_id: `ORD-${padded(idx)}`,
+        transaction_id: `TXN-${padded(idx)}`,
+        buyer_id: `user_2buyer${padded(idx)}`,
+        seller_id: `user_2seller${padded(idx)}`,
+        status: status as any,
+        delivery_address: pick(ADDRESSES),
+        type: pick(TYPES) as any,
+        created_at: createdAt,
+        delivered_at: deliveredAt,
         operator_id: operator.id,
-        driver_id: realDriverRecord.id,
+        driver_id: assignDriver ? nextDriver().id : null,
       },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-TRAN-002',
-        order_id: 'ORD-BUY-010',
-        transaction_id: 'TXN-BUY-010',
-        buyer_id: 'user_2buyer010',
-        seller_id: 'user_2seller010',
-        status: 'IN_TRANSIT',
-        delivery_address: 'Callejon de las Flores 234, Villa Jardin',
-        type: 'INSUMOS',
-        operator_id: operator.id,
-        driver_id: driverAssigned.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-TRAN-003',
-        order_id: 'ORD-BUY-011',
-        transaction_id: 'TXN-BUY-011',
-        buyer_id: 'user_2buyer011',
-        seller_id: 'user_2seller011',
-        status: 'IN_TRANSIT',
-        delivery_address: 'Ruta del Botanico 890, El Vergel',
-        type: 'SEMILLAS',
-        operator_id: operator.id,
-        driver_id: realDriverRecord.id,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-TRAN-004',
-        order_id: 'ORD-BUY-012',
-        transaction_id: 'TXN-BUY-012',
-        buyer_id: 'user_2buyer012',
-        seller_id: 'user_2seller012',
-        status: 'IN_TRANSIT',
-        delivery_address: 'Pasaje del Helecho 456, Ciudad Jardin',
-        type: 'OTROS',
-        operator_id: operator.id,
-        driver_id: driverAssigned.id,
-      },
-    }),
-  ])
-
-  for (const ship of inTransitShipments) {
-    await prisma.trackingEvent.createMany({
-      data: [
-        { shipment_id: ship.id, status: 'RECIBIDO_EN_ORIGEN', timestamp: twoDaysAgo },
-        { shipment_id: ship.id, status: 'EN_TRANSITO', timestamp: sixHoursAgo },
-      ],
     })
+    return { id: ship.id, status, created_at: createdAt, delivered_at: deliveredAt }
   }
 
-  const deliveredShipments = await Promise.all([
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-DELV-001',
-        order_id: 'ORD-BUY-013',
-        transaction_id: 'TXN-BUY-013',
-        buyer_id: 'user_2buyer013',
-        seller_id: 'user_2seller013',
-        status: 'DELIVERED',
-        delivery_address: 'Av. del Curador 100, Centro Botanico',
-        type: 'PLANTA_VIVA',
-        operator_id: operator.id,
-        driver_id: realDriverRecord.id,
-        delivered_at: now,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-DELV-002',
-        order_id: 'ORD-BUY-014',
-        transaction_id: 'TXN-BUY-014',
-        buyer_id: 'user_2buyer014',
-        seller_id: 'user_2seller014',
-        status: 'DELIVERED',
-        delivery_address: 'Calle del Especimen 789, Residencial Flora',
-        type: 'FRAGIL',
-        operator_id: operator.id,
-        driver_id: driverAssigned.id,
-        delivered_at: oneDayAgo,
-      },
-    }),
-    prisma.shipment.create({
-      data: {
-        tracking_id: 'BOT-DELV-003',
-        order_id: 'ORD-BUY-015',
-        transaction_id: 'TXN-BUY-015',
-        buyer_id: 'user_2buyer015',
-        seller_id: 'user_2seller015',
-        status: 'DELIVERED',
-        delivery_address: 'Boulevard de los Viveros 321, Sector Raiz',
-        type: 'INSUMOS',
-        operator_id: operator.id,
-        driver_id: realDriverRecord.id,
-        delivered_at: sixHoursAgo,
-      },
-    }),
-  ])
+  for (let i = 0; i < 40; i++) {
+    const created = daysAgo(randomInt(15, 90))
+    const delivered = new Date(created.getTime() + randomInt(1, 3) * 24 * 60 * 60 * 1000)
+    allShipments.push(await createShipment('DELIVERED', created, delivered, true))
+  }
+  for (let i = 0; i < 10; i++) {
+    const created = daysAgo(randomInt(15, 90))
+    allShipments.push(await createShipment('CANCELLED', created, null, Math.random() < 0.5))
+  }
 
-  for (const ship of deliveredShipments) {
-    await prisma.trackingEvent.createMany({
-      data: [
-        { shipment_id: ship.id, status: 'RECIBIDO_EN_ORIGEN', timestamp: threeDaysAgo },
-        { shipment_id: ship.id, status: 'EN_TRANSITO', timestamp: twoDaysAgo },
-        { shipment_id: ship.id, status: 'ENTREGADO', timestamp: ship.delivered_at || now },
-      ],
+  for (let i = 0; i < 18; i++) {
+    const created = daysAgo(randomInt(3, 15))
+    const delivered = new Date(created.getTime() + randomInt(1, 2) * 24 * 60 * 60 * 1000)
+    allShipments.push(await createShipment('DELIVERED', created, delivered, true))
+  }
+  for (let i = 0; i < 7; i++) {
+    const created = daysAgo(randomInt(3, 15))
+    allShipments.push(await createShipment('IN_TRANSIT', created, null, true))
+  }
+
+  for (let i = 0; i < 6; i++) {
+    const created = daysAgo(randomInt(1, 3))
+    const deliveryMs = randomInt(12, 36) * 60 * 60 * 1000
+    const delivered = new Date(Math.min(created.getTime() + deliveryMs, now.getTime()))
+    allShipments.push(await createShipment('DELIVERED', created, delivered, true))
+  }
+  for (let i = 0; i < 5; i++) {
+    const created = daysAgo(randomInt(1, 3))
+    allShipments.push(await createShipment('IN_TRANSIT', created, null, true))
+  }
+  for (let i = 0; i < 4; i++) {
+    const created = daysAgo(randomInt(1, 3))
+    allShipments.push(await createShipment('ASSIGNED', created, null, true))
+  }
+
+  for (let i = 0; i < 5; i++) {
+    const created = daysAgo(0)
+    allShipments.push(await createShipment('PENDING', created, null, false))
+  }
+  for (let i = 0; i < 3; i++) {
+    const created = daysAgo(0)
+    allShipments.push(await createShipment('ASSIGNED', created, null, true))
+  }
+  for (let i = 0; i < 2; i++) {
+    const created = daysAgo(0)
+    allShipments.push(await createShipment('IN_TRANSIT', created, null, true))
+  }
+
+  for (const shipment of allShipments) {
+    const eventStatuses = EVENT_CHAIN[shipment.status]
+    if (!eventStatuses) continue
+
+    const spanMs = shipment.delivered_at
+      ? shipment.delivered_at.getTime() - shipment.created_at.getTime()
+      : now.getTime() - shipment.created_at.getTime()
+
+    const totalEvents = eventStatuses.length
+    const eventData = eventStatuses.map((eventStatus, i) => {
+      const fraction = totalEvents > 1 ? i / (totalEvents - 1) : 0
+      return {
+        shipment_id: shipment.id,
+        status: eventStatus,
+        timestamp: new Date(shipment.created_at.getTime() + fraction * spanMs),
+      }
     })
+
+    await prisma.trackingEvent.createMany({ data: eventData })
   }
 
   if (realOperatorId) {
-    console.log(`Operador real vinculado: ${opUserId}`)
+    console.log(`Real operator linked: ${opUserId}`)
   } else {
-    console.log('Operador de seed usado: user_2opLogistics999')
+    console.log('Seed operator used: user_2opLogistics999')
   }
   if (realDriverId) {
-    console.log(`Repartidor real vinculado: ${drvUserId}`)
+    console.log(`Real driver linked: ${drvUserId}`)
   } else {
-    console.log('Repartidor de seed usado: user_2drvAvail001')
+    console.log('Seed driver used: user_2drvAvail001')
   }
 
-  const total = pendingShipments.length + assignedShipments.length + inTransitShipments.length + deliveredShipments.length
-  console.log(`\n${total} envios creados:`)
-  console.log(`  ${pendingShipments.length} PENDING`)
-  console.log(`  ${assignedShipments.length} ASSIGNED`)
-  console.log(`  ${inTransitShipments.length} IN_TRANSIT`)
-  console.log(`  ${deliveredShipments.length} DELIVERED`)
+  const statusCounts: Record<string, number> = {}
+  for (const s of allShipments) {
+    statusCounts[s.status] = (statusCounts[s.status] || 0) + 1
+  }
+
+  console.log(`\n${allShipments.length} shipments created:`)
+  for (const status of ['DELIVERED', 'CANCELLED', 'IN_TRANSIT', 'ASSIGNED', 'PENDING']) {
+    const count = statusCounts[status] || 0
+    if (count > 0) {
+      console.log(`  ${count} ${status}`)
+    }
+  }
 }
 
 main()
