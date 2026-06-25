@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #F5F0E6;
+  --color-primary: #1A2E22;
+  --color-secondary: #526347;
+  --color-accent: #C5A059;
+  --color-surface-low: #F3F6F4;
+  --color-surface-container: #EFEEE9;
+  --color-surface-high: #FFFFFF;
+  --color-status-blue: #E0F2FE;
+  --color-status-blue-text: #075985;
+  --color-status-amber: #FEF3C7;
+  --color-status-amber-text: #92400E;
+  --color-status-green: #E8F3EE;
+  --color-status-green-text: #2D6A4F;
+  --color-outline-ghost: rgba(193, 200, 194, 0.2);
+  --color-dark-bg: #0D1410;
+
+  --font-display: var(--font-newsreader), serif;
+  --font-sans: var(--font-manrope), sans-serif;
+}
+
+body {
+  background: #F5F0E6;
+  color: #1A2E22;
+  font-family: var(--font-manrope), sans-serif;
+}
+
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #F5F0E6 0%,
+    #ece6d8 50%,
+    #F5F0E6 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #0D1410 0%,
+    #1a2520 50%,
+    #0D1410 100%
+  );
+  background-size: 200% 100%;
+}
