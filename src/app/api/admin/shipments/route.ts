@@ -7,6 +7,18 @@ import type { PaginatedResponse } from '@/lib/types/api'
 
 export const dynamic = 'force-dynamic'
 
+function applyDateFilter(
+  where: Record<string, unknown>,
+  from?: string,
+  to?: string
+): void {
+  if (!from && !to) return
+  const dateFilter: Record<string, Date> = {}
+  if (from) dateFilter.gte = new Date(from)
+  if (to) dateFilter.lte = new Date(to)
+  where.created_at = dateFilter
+}
+
 export async function GET(request: Request) {
   if (!verifyShippingServiceKey(request)) {
     return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
@@ -22,11 +34,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'INVALID_PARAMS', details: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { page, limit, status, seller_id, q } = parsed.data
+  const { page, limit, status, seller_id, q, from, to } = parsed.data
 
   const where: Record<string, unknown> = {}
   if (status) where.status = status
   if (seller_id) where.seller_id = seller_id
+  applyDateFilter(where, from, to)
 
   if (q && q.length < 3) {
     return NextResponse.json({

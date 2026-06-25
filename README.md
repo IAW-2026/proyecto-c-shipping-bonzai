@@ -70,7 +70,49 @@ Tecnicamente es una aplicación Next.js 16 con App Router, Prisma sobre PostgreS
 ## Notas para la Corrección
 
 - **Sistema de diseño**: Paleta de colores Bone (#faf9f4) como fondo, Deep Evergreen (#03271a) como color primario de marca, y Moss (#526347) para textos secundarios. Tipografia: Newsreader (serif) para títulos y Manrope (sans) para cuerpo. Sin bordes de 1px — se utilizan sombras suaves y fondos contrastantes para delimitar elementos. Se implementó una estética de "bitácora botánica curada".
-- **Integración M2M real**: El endpoint `POST /api/shipping/dispatch` notifica automaticamente a la Seller App enviando el `trackingId` a `{SELLER_SERVICE_URL}/api/orders/{orderRef}/tracking`. Al confirmar entrega, la Server Action `confirmDelivery` envia una notificación a `{PAYMENTS_API_URL}/api/payments/{order_id}/delivered` con el header `x-service-key`. Ambas llamadas usan `try/catch` independiente de la transacción local de Prisma para garantizar que el flujo principal nunca se bloquee por fallos externos (eventual consistency).
+- **Integración M2M real**: El endpoint `POST /api/shipping/dispatch` notifica automaticamente a la Seller App enviando el `trackingId` a `{SELLER_SERVICE_URL}/api/orders/{orderRef}/tracking`. Al confirmar entrega, la Server Action `confirmDelivery` envia una notificación a `{PAYMENTS_API_URL}/api/payments/{order_id}/delivered` con el header `x-service-key`. Ambas llamadas usan `try/catch` independiente de la transacción local de Prisma para garantizar que el flujo principal nunca se bloquee por fallos externos (eventual consistency). Las APIs del Control Plane y Analytics se autentican mediante el header `x-shipping-service-key` validado contra la variable de entorno `SHIPPING_SERVICE_KEY`.
 - **Idioma de la UI**: La interfaz de usuario esta 100% en espanol con locale `es-AR` configurado en el tag `<html lang="es-AR">`. Las fechas usan `Intl.DateTimeFormat` con formato DD/MM/YYYY. El código (variables, funciones, enums de Prisma, rutas de API, logs de consola) se mantiene en inglés por estándares de ingeniería. Las traducciones de enums estan centralizadas en `src/lib/translations.ts`.
 - **Datos de prueba**: El seed (`prisma/seed.ts`) genera 15 envíos distribuidos equitativamente entre los estados PENDING (4), ASSIGNED (4), IN_TRANSIT (4) y DELIVERED (3). Cada envío tiene su `transaction_id` y una línea de tiempo de `TrackingEvent` coherente con la narrativa del Diario de tránsito. El seed detecta automaticamente si hay usuarios reales creados por lazy sync para vincular los envíos a las cuentas de Clerk de prueba. Para el testeo del flujo de onboarding se incluyen dos usuarios sin rol (`freeship1+clerk_test@iaw.com` y `freeship2+clerk_test@iaw.com`) con verificación de email desactivada para agilizar el acceso.
-- **Etapa 3 (pendiente)**: Integración de IA generativa para enriquecer la narrativa botánica del Diario de Tránsito con mensajes poéticos personalizados por tipo de espécimen, destino y estación del año. Queda planificada para la siguiente fase del proyecto.
+- **Etapa 3 completada**: APIs del Control Plane y Analytics implementadas con rate limiting, busqueda, paginacion y filtro de fechas con granularidad. Integracion de IA completada en el modulo de Analytics.
+
+## API para Control Plane y Analytics (Etapa 3)
+
+Todos los endpoints (excepto `/api/health`) requieren el header `x-shipping-service-key`
+validado contra la variable de entorno `SHIPPING_SERVICE_KEY`.
+
+### Rate Limiting
+- Limite: 60 peticiones por minuto por service key o IP
+- Excedido: HTTP 429 Too Many Requests
+- `/api/health` esta exento
+
+### Paginacion
+- Parametros: `page` (default 1), `limit` (default 50, maximo 50)
+- Respuesta incluye `meta: { total_records, current_page, total_pages, limit }`
+
+### Busqueda
+- Parametro `q`: si tiene menos de 3 caracteres, retorna array vacio sin consultar la DB
+- Con 3+ caracteres: busqueda `contains` case-insensitive
+  - Shipments: `tracking_id` y `delivery_address`
+  - Staff: `clerk_user_id`
+
+### Filtro de Fechas
+- Parametros `from` y `to` (ISO 8601 datetime)
+- `GET /api/analytics/delivery-stats` tambien acepta `granularity` (day, week, month)
+  que agrupa los resultados con `DATE_TRUNC` de PostgreSQL
+
+### Endpoints
+
+| Metodo | Ruta | Descripcion |
+|---|---|---|
+| GET | `/api/admin/shipments` | Listado global con filtros (status, seller_id, q, from, to) |
+| GET | `/api/admin/shipments/incidents` | Solo envios CANCELLED |
+| GET | `/api/admin/operators` | Listado de operadores con busqueda |
+| GET | `/api/admin/drivers` | Listado de repartidores con busqueda |
+| PATCH | `/api/admin/operators/[id]/status` | ACTIVE / INACTIVE |
+| PATCH | `/api/admin/drivers/[id]/status` | ACTIVE->AVAILABLE, SUSPENDED, INACTIVE |
+| GET | `/api/admin/operators/[id]/shipments` | Historial de envios del operador |
+| GET | `/api/admin/drivers/[id]/shipments` | Historial de envios del repartidor |
+| GET | `/api/analytics/delivery-stats` | Metricas (total, activos, success rate, by_status, periods) |
+| GET | `/api/analytics/shipments-by-type` | Distribucion por tipo de envio |
+| GET | `/api/analytics/recent-activity` | Ultimos 10 eventos de tracking |
+| GET | `/api/health` | Health check (sin auth, sin rate limit) |
